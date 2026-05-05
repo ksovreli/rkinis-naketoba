@@ -1,0 +1,35 @@
+<header class="navbar" [class.scrolled]="isScrolled()">
+  <div class="nav-container">
+    
+    <!-- Logo -->
+    <div class="logo-wrapper" routerLink="/">
+      <div class="logo-text">
+        <span class="brand">რკინის <span class="gold">ნაკეთობა</span></span>
+        <span class="sub-brand">Metalwork</span>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-menu" [class.open]="isMenuOpen()">
+      <ul class="nav-links">
+        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">მთავარი</a></li>
+        <li><a routerLink="/ჩვენი-ნამუშევრები" routerLinkActive="active" (click)="closeMenu()">ჩვენი ნამუშევრები</a></li>
+        <li><a routerLink="/ჩვენს-შესახებ" routerLinkActive="active" (click)="closeMenu()">ჩვენს შესახებ</a></li>
+        <li><a routerLink="/კონტაქტი" routerLinkActive="active" (click)="closeMenu()">კონტაქტი</a></li>
+      </ul>
+    </nav>
+
+    <!-- Call to Action (Optional) -->
+    <div class="header-actions">
+      <button routerLink="/კონტაქტი" class="cta-btn">დაგვიკავშირდით</button>
+      
+      <!-- Burger -->
+      <button class="burger" (click)="toggleMenu()" [class.active]="isMenuOpen()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+
+  </div>
+</header>

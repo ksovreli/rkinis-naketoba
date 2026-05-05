@@ -1,0 +1,124 @@
+<main class="home-page">
+
+  <section class="hero">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <div class="hero-tag">20 წლიანი გამოცდილებით</div>
+
+      <h1>
+        შენი <span class="highlight">იდეა</span><br>
+        ჩვენი შესრულება
+      </h1>
+
+      <p>
+        უნიკალური რკინის ნაკეთობები, რომლებიც სიმშვიდეს, სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
+      </p>
+
+      <div class="hero-btns">
+        <a routerLink="/ჩვენი-ნამუშევრები" class="btn-primary">ნამუშევრების ნახვა</a>
+        <a routerLink="/კონტაქტი" class="btn-secondary">დაგვიკავშირდით</a>
+      </div>
+    </div>
+
+    <div class="scroll-indicator">
+      <span>ჩასქროლე!</span>
+      <div class="mouse"></div>
+    </div>
+  </section>
+
+  <section class="featured-works">
+    <div class="bg-text">IRONWORK</div>
+
+    <div class="container">
+      <header class="section-header">
+        <span class="pre-title">ექსკლუზიური კოლექცია</span>
+        <h2>გამორჩეული <span class="gold">ნამუშევრები</span></h2>
+        <div class="header-divider"></div>
+      </header>
+
+      <div class="works-grid">
+        @for (card of categoryCards(); track card.name; let i = $index) {
+
+        <a [routerLink]="['/ჩვენი-ნამუშევრები', card.name]" class="work-card"
+          [attr.aria-label]="card.name + ' - დეტალურად'">
+          <div class="card-inner">
+            <div class="card-img">
+              <img 
+                [ngSrc]="card.image || ''" 
+                [alt]="card.name" 
+                fill
+                [priority]="i < 2"> 
+              <div class="card-badge">#0{{ i + 1 }}</div>
+            </div>
+            <div class="card-overlay">
+              <div class="card-info">
+                <span class="card-cat">{{ card.name }}</span>
+                <h3>{{ card.name }}</h3>
+
+                <div class="card-footer">
+                  <span class="view-link">დათვალიერება →</span>
+                  <div class="line"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </a>
+
+        }
+      </div>
+
+      <div class="footer-action">
+        <a routerLink="/ჩვენი-ნამუშევრები" class="btn-outline">ყველა ნამუშევარი</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="why-us">
+    <div class="container">
+      <div class="section-header">
+        <span class="pre-title">რატომ ჩვენ</span>
+        <h2>რას <span class="gold">გთავაზობთ ჩვენ</span></h2>
+        <div class="header-divider"></div>
+      </div>
+
+      <div class="why-grid">
+        <div class="why-card">
+          <span class="bg-number">01</span>
+          <div class="card-line"></div>
+          <h4>ინდივიდუალური დიზაინი</h4>
+          <p>თითოეული ნამუშევარი თქვენი იდეიდან იწყება და ჩვენი ხელით ცოცხლდება.</p>
+        </div>
+
+        <div class="why-card">
+          <span class="bg-number">02</span>
+          <div class="card-line"></div>
+          <h4>პრემიუმ ხარისხის მასალები</h4>
+          <p>მხოლოდ მაღალი ხარისხის რკინის მასალები და დეტალებზე მაქსიმალური ყურადღება.</p>
+        </div>
+
+        <div class="why-card">
+          <span class="bg-number">03</span>
+          <div class="card-line"></div>
+          <h4>გარანტია</h4>
+          <p>ჩვენი ნამუშევრები თაობებს ემსახურება.</p>
+        </div>
+
+        <div class="why-card">
+          <span class="bg-number">04</span>
+          <div class="card-line"></div>
+          <h4>სრული სერვისი</h4>
+          <p>დიზაინი • წარმოება • მონტაჟი</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final-cta">
+    <div class="container">
+      <h2>მზად ხართ თქვენი იდეის განსახორციელებლად?</h2>
+      <a routerLink="/კონტაქტი" class="btn-primary large">დაგვიკავშირდით დღეს</a>
+    </div>
+  </section>
+
+</main>

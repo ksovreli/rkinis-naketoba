@@ -1,0 +1,45 @@
+$gold: #b8860b;
+
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 50px;
+  background: #0a0a0a;
+  border-bottom: 1px solid #222;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  .logo {
+    font-weight: 900;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: white;
+    .gold { color: $gold; }
+  }
+
+  .links {
+    display: flex;
+    gap: 30px;
+
+    a {
+      text-decoration: none;
+      color: #ccc;
+      font-weight: 500;
+      transition: 0.3s;
+      
+      &:hover, &.active {
+        color: $gold;
+      }
+    }
+  }
+}
+
+.footer {
+  text-align: center;
+  padding: 40px;
+  background: #050505;
+  color: #555;
+  border-top: 1px solid #111;
+}

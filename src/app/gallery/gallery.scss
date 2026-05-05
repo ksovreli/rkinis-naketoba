@@ -1,0 +1,614 @@
+$gold: #c5a059;
+$gold-light: #d4b36a;
+$gold-dark: #a88942;
+$dark-bg: #050505;
+$card-bg: #0a0a0a;
+$card-bg-hover: #111111;
+$text-dim: rgba(255, 255, 255, 0.5);
+$text-muted: rgba(255, 255, 255, 0.35);
+$border-subtle: rgba(255, 255, 255, 0.06);
+$border-gold: rgba($gold, 0.4);
+
+// ─── Mixins ─────────────────────────────────────────────────────
+@mixin gold-glow($intensity: 0.3) {
+  box-shadow: 
+    0 0 20px rgba($gold, $intensity),
+    0 0 40px rgba($gold, $intensity * 0.5);
+}
+
+@mixin smooth-transition($duration: 0.4s, $timing: cubic-bezier(0.4, 0, 0.2, 1)) {
+  transition: all $duration $timing;
+}
+
+@mixin glass-effect($opacity: 0.05) {
+  background: rgba(255, 255, 255, $opacity);
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  opacity: 0.03;
+  pointer-events: none;
+  z-index: 1;
+}
+
+// ─── Main Gallery ───────────────────────────────────────────────
+.premium-gallery {
+  background: $dark-bg;
+  background-image: 
+    radial-gradient(ellipse at 20% 0%, rgba($gold, 0.03) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 100%, rgba($gold, 0.02) 0%, transparent 50%);
+  color: #fff;
+  padding: 100px 0;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+
+  // ─── Header ─────────────────────────────────────────────────
+  .gallery-header {
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 60px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+
+    .pre-title {
+      color: $gold;
+      letter-spacing: 6px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      display: inline-block;
+      margin-bottom: 15px;
+      position: relative;
+      font-weight: 500;
+
+      &::before,
+      &::after {
+        content: '◆';
+        font-size: 0.4rem;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        opacity: 0.6;
+      }
+
+      &::before { left: -20px; }
+      &::after { right: -20px; }
+    }
+
+    .main-title {
+      font-size: clamp(2.2rem, 6vw, 4rem);
+      font-weight: 200;
+      letter-spacing: 2px;
+      line-height: 1.2;
+      
+      .gold {
+        color: $gold;
+        font-style: italic;
+        font-weight: 300;
+        text-shadow: 0 0 30px rgba($gold, 0.3);
+      }
+    }
+
+    .premium-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-top: 25px;
+
+      .line {
+        width: 60px;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, rgba($gold, 0.6), transparent);
+      }
+
+      .diamond {
+        width: 8px;
+        height: 8px;
+        background: $gold;
+        transform: rotate(45deg);
+        box-shadow: 0 0 10px rgba($gold, 0.5);
+        animation: pulse-diamond 2s ease-in-out infinite;
+      }
+    }
+  }
+
+  // ─── Filter Bar ─────────────────────────────────────────────
+  .filter-bar {
+    margin-bottom: 50px;
+    position: relative;
+    z-index: 2;
+
+    .filter-track {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      padding: 0 20px;
+      flex-wrap: wrap;
+
+      @media (max-width: 768px) {
+        justify-content: center;
+        padding-bottom: 15px;
+        align-items: center;
+        display: flex;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        
+        &::-webkit-scrollbar {
+          display: none;
+        }
+      }
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid $border-subtle;
+      color: $text-dim;
+      padding: 12px 28px;
+      cursor: pointer;
+      white-space: nowrap;
+      font-size: 0.75rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      @include smooth-transition(0.3s);
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, rgba($gold, 0.1), transparent);
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+
+      &:hover {
+        border-color: rgba($gold, 0.5);
+        color: #fff;
+        transform: translateY(-2px);
+
+        &::before {
+          opacity: 1;
+        }
+      }
+
+      &.active {
+        border-color: $gold;
+        color: $gold;
+        background: rgba($gold, 0.08);
+        @include gold-glow(0.1);
+
+        &::before {
+          opacity: 1;
+        }
+      }
+    }
+  }
+
+  // ─── Gallery Grid ───────────────────────────────────────────
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 30px;
+    padding: 0 5%;
+    max-width: 1500px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 2;
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      padding: 0 20px;
+    }
+  }
+
+  // ─── Work Card ──────────────────────────────────────────────
+  .work-card {
+    background: $card-bg;
+    border-radius: 16px;
+    border: 1px solid $border-subtle;
+    overflow: hidden;
+    cursor: pointer;
+    position: relative;
+    @include smooth-transition(0.5s);
+
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 16px;
+      padding: 1px;
+      background: linear-gradient(
+        135deg,
+        rgba($gold, 0) 0%,
+        rgba($gold, 0.3) 50%,
+        rgba($gold, 0) 100%
+      );
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0;
+      transition: opacity 0.5s;
+      pointer-events: none;
+    }
+
+    &:hover {
+      transform: translateY(-10px) scale(1.02);
+      background: $card-bg-hover;
+      @include gold-glow(0.15);
+
+      &::before {
+        opacity: 1;
+      }
+
+      .card-media {
+        img {
+          transform: scale(1.15);
+          filter: brightness(0.35) saturate(0.8);
+        }
+
+        .card-hover-info {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(1);
+        }
+
+        &::after {
+          opacity: 1;
+        }
+      }
+
+      .badge {
+        background: $gold;
+        color: #000;
+        border-color: $gold;
+      }
+    }
+
+    .card-media {
+      position: relative;
+      height: 400px;
+      background: #000;
+      overflow: hidden;
+
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          180deg,
+          transparent 0%,
+          transparent 50%,
+          rgba(0, 0, 0, 0.8) 100%
+        );
+        opacity: 0.5;
+        transition: opacity 0.5s;
+      }
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        @include smooth-transition(0.8s, cubic-bezier(0.25, 0.46, 0.45, 0.94));
+      }
+
+      .card-hover-info {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0.8);
+        opacity: 0;
+        @include smooth-transition(0.4s);
+        text-align: center;
+        z-index: 3;
+
+        .plus {
+          font-size: 3rem;
+          font-weight: 100;
+          color: $gold;
+          display: block;
+          line-height: 1;
+          text-shadow: 0 0 20px rgba($gold, 0.5);
+        }
+
+        p {
+          font-size: 0.65rem;
+          text-transform: uppercase;
+          letter-spacing: 3px;
+          margin-top: 10px;
+          color: rgba(255, 255, 255, 0.9);
+        }
+      }
+
+      .badge {
+        position: absolute;
+        top: 18px;
+        left: 18px;
+        background: rgba(0, 0, 0, 0.85);
+        color: $gold;
+        padding: 6px 14px;
+        font-size: 0.6rem;
+        font-weight: 600;
+        letter-spacing: 1px;
+        border: 1px solid rgba($gold, 0.4);
+        border-radius: 6px;
+        z-index: 4;
+        @include smooth-transition(0.3s);
+        @include glass-effect(0.1);
+      }
+    }
+
+    .card-body {
+      padding: 22px 28px;
+      border-top: 1px solid $border-subtle;
+
+      .category-tag {
+        font-size: 0.55rem;
+        color: $gold;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        font-weight: 500;
+        opacity: 0.8;
+      }
+
+      .title-row {
+        margin-top: 10px;
+      }
+
+      .title {
+        font-size: 1.3rem;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        line-height: 1.4;
+        color: rgba(255, 255, 255, 0.95);
+      }
+    }
+  }
+
+  // ─── Loader ─────────────────────────────────────────────────
+  .loader-wrapper {
+    display: flex;
+    justify-content: center;
+    padding: 80px 0;
+  }
+
+  .custom-spinner {
+    width: 50px;
+    height: 50px;
+    border: 2px solid $border-subtle;
+    border-top-color: $gold;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 🖼️ LIGHTBOX
+// ═══════════════════════════════════════════════════════════════
+
+.fixed-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+  animation: fadeIn 0.3s ease;
+
+  .lightbox-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.97);
+  }
+
+  .close-x {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    cursor: pointer;
+    z-index: 10;
+    @include smooth-transition(0.3s);
+
+    &:hover {
+      background: rgba($gold, 0.2);
+      border-color: $gold;
+      transform: rotate(90deg);
+
+      span {
+        background: $gold;
+      }
+    }
+
+    span {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 22px;
+      height: 1.5px;
+      background: #fff;
+      @include smooth-transition(0.3s);
+
+      &:nth-child(1) {
+        transform: translate(-50%, -50%) rotate(45deg);
+      }
+
+      &:nth-child(2) {
+        transform: translate(-50%, -50%) rotate(-45deg);
+      }
+    }
+  }
+
+  .img-container {
+    max-width: 1200px;
+    width: 100%;
+    position: relative;
+    z-index: 5;
+    animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+    .img-wrapper {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      @include gold-glow(0.1);
+
+      .full-img {
+        width: 100%;
+        height: auto;
+        max-height: 85vh;
+        object-fit: contain;
+        display: block;
+      }
+    }
+  }
+
+  .img-info-panel {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px 35px;
+
+    .info-category {
+      color: $gold;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-weight: 500;
+    }
+
+    .info-title {
+      font-size: clamp(1.3rem, 3vw, 1.8rem);
+      font-weight: 300;
+      margin-top: 8px;
+      letter-spacing: 1px;
+      color: white;
+    }
+
+    .info-line {
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, $gold, rgba($gold, 0.3));
+      margin-top: 15px;
+      border-radius: 2px;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 🎬 ANIMATIONS
+// ═══════════════════════════════════════════════════════════════
+
+@keyframes pulse-diamond {
+  0%, 100% {
+    opacity: 1;
+    transform: rotate(45deg) scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: rotate(45deg) scale(1.1);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// 📱 RESPONSIVE ENHANCEMENTS
+// ═══════════════════════════════════════════════════════════════
+
+@media (max-width: 768px) {
+  .premium-gallery {
+    padding: 60px 0;
+
+    .gallery-header {
+      margin-bottom: 40px;
+
+      .pre-title {
+        &::before,
+        &::after {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .fixed-lightbox {
+    padding: 15px;
+
+    .close-x {
+      top: 15px;
+      right: 15px;
+      width: 40px;
+      height: 40px;
+    }
+
+    .img-info-panel {
+      padding: 25px 20px;
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ✨ OPTIONAL: STAGGER ANIMATION FOR CARDS
+// ═══════════════════════════════════════════════════════════════
+
+.gallery-grid .work-card {
+  animation: cardFadeIn 0.6s ease backwards;
+  
+  @for $i from 1 through 12 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.08}s;
+    }
+  }
+}
+
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

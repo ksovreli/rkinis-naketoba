@@ -1,0 +1,70 @@
+<section class="premium-gallery">
+  <div class="noise-overlay"></div>
+
+  <header class="gallery-header">
+    <span class="pre-title">მდიდრული ნამუშევრები</span>
+    <h1 class="main-title">ჩვენი <span class="gold">ნამუშევრები</span></h1>
+    <div class="premium-divider">
+      <span class="line"></span>
+      <span class="diamond"></span>
+      <span class="line"></span>
+    </div>
+  </header>
+
+  <nav class="filter-bar">
+    <div class="filter-track">
+      @for (cat of categories(); track cat) {
+      <button class="filter-btn" [class.active]="selectedCategory() === cat" (click)="setCategory(cat)">
+        {{ cat }}
+      </button>
+      }
+    </div>
+  </nav>
+
+  @if (productService.isLoading()) {
+  <div class="loader-wrapper">
+    <div class="custom-spinner"></div>
+  </div>
+  } @else {
+  <div class="gallery-grid">
+    @for (item of filteredProducts(); track item.id; let i = $index) {
+    <article class="work-card" (click)="openImage(item)">
+      <div class="card-media">
+        <img [ngSrc]="item.imageUrl" [alt]="item.customTitle" fill [priority]="i < 2" class="premium-img">
+
+        <div class="card-hover-info">
+          <span class="plus">+</span>
+          <p>დათვალიერება</p>
+        </div>
+        <div class="badge">№{{ item.id }}</div>
+      </div>
+      <div class="card-body">
+        <span class="category-tag">ნამუშევარი</span>
+        <div class="title-row">
+          <h3 class="title">{{ item.customTitle }}</h3>
+        </div>
+      </div>
+    </article>
+    }
+  </div>
+  }
+</section>
+
+@if (selectedImage(); as img) {
+<div class="fixed-lightbox" (click)="closeImage()">
+  <div class="lightbox-overlay"></div>
+  <button class="close-x" (click)="closeImage()">
+    <span></span><span></span>
+  </button>
+  <div class="img-container" (click)="$event.stopPropagation()">
+    <div class="img-wrapper">
+      <img [src]="img.imageUrl" [alt]="img.customTitle" class="full-img animate-in">
+      <div class="img-info-panel">
+        <span class="info-category">{{ img.category }}</span>
+        <h2 class="info-title">{{img.customTitle}}</h2>
+        <div class="info-line"></div>
+      </div>
+    </div>
+  </div>
+</div>
+}

@@ -1,0 +1,117 @@
+.about-minimal {
+  background: #080808;
+  color: #fff;
+  padding: 160px 0;
+  position: relative;
+  overflow: hidden;
+}
+.about-minimal .container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.about-minimal .about-grid {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+}
+@media (max-width: 992px) {
+  .about-minimal .about-grid {
+    flex-direction: column;
+    text-align: center;
+    gap: 60px;
+  }
+}
+.about-minimal .content-side {
+  flex: 1;
+}
+.about-minimal .content-side .meta {
+  font-family: "JetBrains Mono", monospace;
+  color: #c5a059;
+  text-transform: uppercase;
+  letter-spacing: 5px;
+  font-size: 0.75rem;
+  margin-bottom: 20px;
+}
+.about-minimal .content-side h1 {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 40px;
+}
+.about-minimal .content-side h1 .accent {
+  color: #c5a059;
+  font-style: italic;
+}
+.about-minimal .content-side .description {
+  max-width: 500px;
+}
+.about-minimal .content-side .description p {
+  font-family: "Montserrat", sans-serif;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 1.1rem;
+  line-height: 1.8;
+  margin-bottom: 25px;
+  font-weight: 300;
+}
+@media (max-width: 992px) {
+  .about-minimal .content-side .description {
+    margin: 0 auto;
+  }
+}
+.about-minimal .content-side .brand-signature {
+  margin-top: 40px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem;
+  letter-spacing: 3px;
+  opacity: 0.8;
+  border-bottom: 1px solid rgba(197, 160, 89, 0.4);
+  display: inline-block;
+  padding-bottom: 5px;
+}
+.about-minimal .image-side {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+.about-minimal .image-side .image-container {
+  position: relative;
+  width: 100%;
+  max-width: 500px;
+}
+.about-minimal .image-side .image-container img {
+  width: 100%;
+  height: 600px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  z-index: 2;
+  filter: grayscale(0) contrast(1);
+  transform: translateY(-10px) translateX(-10px);
+}
+@media (max-width: 600px) {
+  .about-minimal .image-side .image-container img {
+    height: 400px;
+  }
+}
+.about-minimal .image-side .image-container .image-frame {
+  position: absolute;
+  top: -25px;
+  right: -25px;
+  width: 100%;
+  height: 100%;
+  border: 1px solid rgba(197, 160, 89, 0.5);
+  z-index: 1;
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.noise-overlay {
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: 0.02;
+  pointer-events: none;
+  z-index: 1;
+}/*# sourceMappingURL=about-us.css.map */
