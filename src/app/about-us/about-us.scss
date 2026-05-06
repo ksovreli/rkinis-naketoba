@@ -8,7 +8,6 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 
 // ─── ABOUT SECTION ──────────────────────────────────────────────
 .about-minimal {
-  background: $dark;
   color: #fff;
   padding: 160px 0;
   position: relative;
@@ -64,7 +63,7 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 
     .description {
       max-width: 500px;
-      
+
       p {
         font-family: $sans;
         color: rgba(255, 255, 255, 0.6);
@@ -103,8 +102,8 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       width: 100%;
       max-width: 500px;
       // ფიზიკური ზომა, რომ კონტეინერი არ "ჩაიფუშოს"
-      aspect-ratio: 4 / 5; 
-      height: 600px; 
+      aspect-ratio: 4 / 5;
+      height: 600px;
 
       @media (max-width: 992px) {
         margin: 0 auto;
@@ -121,7 +120,7 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         z-index: 2;
         filter: grayscale(0.2) contrast(1.1);
         // GPU აჩქარება
-        transform: translate3d(-15px, -15px, 0); 
+        transform: translate3d(-15px, -15px, 0);
         will-change: transform;
       }
 
@@ -143,6 +142,7 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
           transform: translate3d(0, 0, 0);
           filter: grayscale(0) contrast(1);
         }
+
         .image-frame {
           transform: translate3d(-10px, -10px, 0);
           border-color: $gold;
@@ -156,10 +156,8 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 .noise-overlay {
   position: absolute;
   inset: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity: 0.02;
   pointer-events: none;
   z-index: 1;
-  // აიძულებს ბრაუზერს გამოიყენოს ვიდეო ბარათი
-  transform: translateZ(0); 
+  transform: translateZ(0);
 }

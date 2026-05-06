@@ -13,22 +13,13 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
 // PREMIUM FOOTER STYLES
 // ============================================================
 .premium-footer {
-  background: $f-dark;
+  background: transparent;
   color: #fff;
   padding: 100px 0 40px;
   position: relative;
   border-top: 1px solid rgba($f-gold, 0.1);
   overflow: hidden;
   width: 100%;
-
-  // Noise Texture Effect
-  .noise-overlay {
-    position: absolute;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-    opacity: 0.03;
-    pointer-events: none;
-  }
 
   .container {
     max-width: 1300px;
@@ -61,7 +52,10 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
       font-size: clamp(1.8rem, 5vw, 2.2rem);
       margin: 0 0 15px;
       letter-spacing: 1px;
-      .gold { color: $f-gold; }
+
+      .gold {
+        color: $f-gold;
+      }
     }
 
     .brand-line {
@@ -69,7 +63,10 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
       height: 2px;
       background: $f-gold;
       margin: 20px 0;
-      @media (max-width: 992px) { margin: 20px auto; }
+
+      @media (max-width: 992px) {
+        margin: 20px auto;
+      }
     }
 
     p {
@@ -220,6 +217,11 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
 
 // --- Keyframes ---
 @keyframes slide-glow {
-  0% { left: -150px; }
-  100% { left: 100%; }
+  0% {
+    left: -150px;
+  }
+
+  100% {
+    left: 100%;
+  }
 }
