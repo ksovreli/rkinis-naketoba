@@ -1,20 +1,25 @@
+// 1. უსაფრთხოდ შემოვიტანოთ Inter შრიფტი (ეს გზა არ იწვევს კონსოლის ერორებს)
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap');
+
 * {
     box-sizing: border-box;
     padding: 0;
     margin: 0;
 }
 
-
-// src/styles.scss
 html {
     // უზრუნველყოფს, რომ ფონი ყოველთვის ბოლომდე ჩავიდეს
     height: 100%; 
 }
+
 body {
-  margin: 0;
+    margin: 0;
     padding: 0;
     min-height: 100vh;
     background-color: #080808;
+    
+    // მივუთითოთ ჩატვირთული შრიფტი და სისტემური ფოლბექები უსაფრთხოებისთვის
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     
     // ბადის სტილი
     background-image: 

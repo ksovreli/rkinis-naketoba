@@ -46,7 +46,6 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
 
   // Brand / Logo Area
   .footer-brand {
-
     .logo {
       font-family: $f-serif;
       font-size: clamp(1.8rem, 5vw, 2.2rem);
@@ -112,7 +111,8 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
       li {
         margin-bottom: 14px;
 
-        a {
+        // ნავიგაციის ჩვეულებრივი ბმულები
+        a:not(.contact-link) {
           color: $f-text-muted;
           text-decoration: none;
           font-size: 0.95rem;
@@ -124,12 +124,32 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
             color: #fff;
             transform: translateX(6px);
           }
+
+          &.active {
+            color: $f-gold;
+            font-weight: 500;
+          }
         }
 
-        &.address {
+        // ტელეფონის ნომრები (მორგებული Hover ეფექტით)
+        .contact-link {
           color: $f-text-muted;
+          text-decoration: none;
+          font-size: 0.95rem;
+          transition: $f-transition;
+          display: inline-block;
+
+          &:hover {
+            color: $f-gold;
+          }
+        }
+
+        // მისამართის სტილი
+        &.address-item {
+          color: rgba(255, 255, 255, 0.4);
           font-size: 0.9rem;
           max-width: 200px;
+          margin-top: 18px; // ოდნავ გამოვყოთ ნომრებისგან
         }
       }
     }

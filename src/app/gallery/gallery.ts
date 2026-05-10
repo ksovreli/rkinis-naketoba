@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { Component, computed, inject, signal, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
@@ -6,12 +6,12 @@ import { SeoService } from '../services/seo';
 
 @Component({
   selector: 'app-gallery',
-  // ფაქტორი: NgOptimizedImage პერფორმანსისთვის
+  standalone: true,
   imports: [CommonModule, NgOptimizedImage],
   templateUrl: './gallery.html',
   styleUrl: './gallery.scss'
 })
-export class Gallery implements OnInit {
+export class Gallery implements OnInit, OnDestroy {
   public productService = inject(ProductService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
@@ -32,12 +32,29 @@ export class Gallery implements OnInit {
       const cat = params['category'] ? decodeURIComponent(params['category']) : 'ყველა';
       this.selectedCategory.set(cat);
       
+      // ქართული კატეგორიების შესაბამისობა ინგლისურ სურათების სახელებთან SEO-სთვის
+      const imageMap: { [key: string]: string } = {
+        'ყველა': 'main',
+        'კარი': 'kari',
+        'ჭიშკარი': 'chishkari',
+        'მოაჯირი': 'moajiri',
+        'გისოსი': 'gisosi'
+      };
+      
+      const imgSlug = imageMap[cat] || 'main';
+      
       this.seo.updateMeta({
         title: cat === 'ყველა' ? 'ჩვენი ნამუშევრები' : cat,
         description: `${cat} - უმაღლესი ხარისხის რკინის ნაკეთობების ფართო არჩევანი. დაათვალიერეთ ჩვენი გალერეა.`,
-        image: `/images/og-${cat === 'ყველა' ? 'main' : cat.toLowerCase()}.jpg`
+        image: `/images/og-${imgSlug}.jpg` // 👈 უსაფრთხო, ინგლისური დასახელება
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    if (this.isBrowser) {
+      document.body.style.overflow = '';
+    }
   }
 
   categories = computed(() => {
@@ -78,7 +95,7 @@ export class Gallery implements OnInit {
 
   closeImage() {
     if (this.isBrowser) {
-      document.body.style.overflow = 'auto';
+      document.body.style.overflow = '';
     }
     this.selectedImage.set(null);
   }

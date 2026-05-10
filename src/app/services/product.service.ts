@@ -45,9 +45,12 @@ export class ProductService {
       .subscribe((data) => {
         const formattedData = data.map(p => ({
           ...p,
-          imageUrl: p.imageUrl.startsWith('images/') ? p.imageUrl : `images/${p.imageUrl}`
+          // შემოწმება: თუ იწყება 'http'-ით ან უკვე უწერია 'images/', არაფერი შევცვალოთ
+          imageUrl: p.imageUrl.startsWith('http') || p.imageUrl.startsWith('images/') 
+            ? p.imageUrl 
+            : `images/${p.imageUrl}`
         }));
         this.products.set(formattedData);
       });
   }
-} 
+}

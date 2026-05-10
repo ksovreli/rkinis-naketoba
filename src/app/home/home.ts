@@ -16,12 +16,9 @@ export class Home {
   private seo = inject(SeoService);
   public productService = inject(ProductService);
   
-  private isBrowser: boolean;
   categories: Category[] = ['ჭიშკარი', 'მოაჯირი', 'კარი', 'გისოსი'];
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
-    this.isBrowser = isPlatformBrowser(this.platformId);
-  }
+  
 
   ngOnInit() {
     this.productService.loadProducts();

@@ -12,7 +12,6 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   padding: 160px 0;
   position: relative;
   overflow: hidden;
-  // ოპტიმიზაცია SSR/Hydration-ისთვის
   contain: content;
 
   .container {
@@ -97,41 +96,38 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     justify-content: flex-end;
     width: 100%;
 
+    @media (max-width: 992px) {
+      justify-content: center;
+    }
+
     .image-container {
       position: relative; // აუცილებელია ngSrc fill-ისთვის
       width: 100%;
-      max-width: 500px;
-      // ფიზიკური ზომა, რომ კონტეინერი არ "ჩაიფუშოს"
-      aspect-ratio: 4 / 5;
-      height: 600px;
+      max-width: 480px;
+      aspect-ratio: 4 / 5; // ავტომატურად განსაზღვრავს სიმაღლეს სიგანის მიხედვით
+      margin: 0;
 
       @media (max-width: 992px) {
         margin: 0 auto;
       }
 
-      @media (max-width: 600px) {
-        height: 400px;
-      }
-
-      // სურათის სტილი (NgOptimizedImage ამატებს absolute პოზიციას)
+      // სურათის სტილი
       .about-img {
         object-fit: cover;
         transition: $transition;
         z-index: 2;
         filter: grayscale(0.2) contrast(1.1);
-        // GPU აჩქარება
         transform: translate3d(-15px, -15px, 0);
         will-change: transform;
       }
 
       .image-frame {
         position: absolute;
-        // ჩარჩო საპირისპირო მხარეს
         top: 15px;
-        right: 15px;
+        right: -15px; // ჩარჩო სიმეტრიულად გავწიოთ მარჯვნივ
         width: 100%;
         height: 100%;
-        border: 1px solid rgba($gold, 0.5);
+        border: 1px solid rgba($gold, 0.3);
         z-index: 1;
         transition: $transition;
       }
@@ -140,24 +136,14 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       &:hover {
         .about-img {
           transform: translate3d(0, 0, 0);
-          filter: grayscale(0) contrast(1);
+          filter: grayscale(0) contrast(1.05);
         }
 
         .image-frame {
-          transform: translate3d(-10px, -10px, 0);
+          transform: translate3d(-15px, -15px, 0);
           border-color: $gold;
         }
       }
     }
   }
-}
-
-// ─── NOISE OVERLAY ──────────────────────────────────────────────
-.noise-overlay {
-  position: absolute;
-  inset: 0;
-  opacity: 0.02;
-  pointer-events: none;
-  z-index: 1;
-  transform: translateZ(0);
 }

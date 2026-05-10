@@ -6,14 +6,18 @@
     <div class="hero-content">
       <div class="hero-tag">20 წლიანი გამოცდილებით</div>
 
-      <h1>
-        შენი <span class="highlight">იდეა</span><br>
-        ჩვენი შესრულება
-      </h1>
+  <div class="visually-hidden">
+    რკინის ნაკეთობები თბილისში, რკინის კარები, ჭიშკრები, მოაჯირები და გისოსები.
+  </div>
 
-      <p>
-        უნიკალური რკინის ნაკეთობები, რომლებიც სიმშვიდეს, სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
-      </p>
+  <h1>
+    შენი <span class="highlight">იდეა</span><br>
+    ჩვენი შესრულება
+  </h1>
+
+  <p>
+    უნიკალური რკინის ნაკეთობები, რომლებიც სიმშვიდეს, სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
+  </p>
 
       <div class="hero-btns">
         <a routerLink="/ჩვენი-ნამუშევრები" class="btn-primary">ნამუშევრების ნახვა</a>
@@ -46,7 +50,7 @@
             <div class="card-img">
               <img 
                 [ngSrc]="card.image || ''" 
-                [alt]="card.name" 
+                [alt]="card.name + ' დამზადება და დიზაინი'"
                 fill
                 [priority]="i < 2"> 
               <div class="card-badge">#0{{ i + 1 }}</div>
@@ -86,28 +90,28 @@
         <div class="why-card">
           <span class="bg-number">01</span>
           <div class="card-line"></div>
-          <h4>ინდივიდუალური დიზაინი</h4>
+          <h3>ინდივიდუალური დიზაინი</h3>
           <p>თითოეული ნამუშევარი თქვენი იდეიდან იწყება და ჩვენი ხელით ცოცხლდება.</p>
         </div>
 
         <div class="why-card">
           <span class="bg-number">02</span>
           <div class="card-line"></div>
-          <h4>პრემიუმ ხარისხის მასალები</h4>
+          <h3>პრემიუმ ხარისხის მასალები</h3>
           <p>მხოლოდ მაღალი ხარისხის რკინის მასალები და დეტალებზე მაქსიმალური ყურადღება.</p>
         </div>
 
         <div class="why-card">
           <span class="bg-number">03</span>
           <div class="card-line"></div>
-          <h4>გარანტია</h4>
+          <h3>გარანტია</h3>
           <p>ჩვენი ნამუშევრები თაობებს ემსახურება.</p>
         </div>
 
         <div class="why-card">
           <span class="bg-number">04</span>
           <div class="card-line"></div>
-          <h4>სრული სერვისი</h4>
+          <h3>სრული სერვისი</h3>
           <p>დიზაინი • წარმოება • მონტაჟი</p>
         </div>
       </div>

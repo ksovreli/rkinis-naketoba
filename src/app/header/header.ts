@@ -11,7 +11,7 @@ import { throttleTime, map } from 'rxjs/operators';
   templateUrl: './header.html',
   styleUrl: './header.scss',
 })
-export class Header{
+export class Header implements OnInit, OnDestroy {
   isMenuOpen = signal(false);
   isScrolled = signal(false);
   isBrowser: boolean;
@@ -26,7 +26,7 @@ export class Header{
 
   ngOnInit() {
     if (this.isBrowser) {
-        this.ngZone.runOutsideAngular(() => {
+      this.ngZone.runOutsideAngular(() => {
         this.scrollSub = fromEvent(window, 'scroll')
           .pipe(
             throttleTime(20),

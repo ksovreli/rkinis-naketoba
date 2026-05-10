@@ -23,6 +23,7 @@ $border-gold: rgba($gold, 0.4);
 @mixin glass-effect($opacity: 0.05) {
   background: rgba(255, 255, 255, $opacity);
 }
+
 // ─── Main Gallery ───────────────────────────────────────────────
 .premium-gallery {
   background-image:
@@ -209,13 +210,24 @@ $border-gold: rgba($gold, 0.4);
 
   // ─── Work Card ──────────────────────────────────────────────
   .work-card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    outline: none;
+    font-family: inherit;
     background: rgba(10, 10, 10, 0.8); // 80% სიმკვრივე
     border-radius: 16px;
     border: 1px solid $border-subtle;
     overflow: hidden;
     cursor: pointer;
     position: relative;
+    padding: 0; // ღილაკის Default პედინგის მოსაშორებლად
     @include smooth-transition(0.5s);
+
+    &:focus-visible {
+      border-color: $gold;
+      @include gold-glow(0.2);
+    }
 
     &::before {
       content: '';
@@ -474,7 +486,10 @@ $border-gold: rgba($gold, 0.4);
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 40px 35px;
+    padding: 60px 35px 40px; // ზემოდან მეტი დაშორება გრადიენტისთვის
+    // მუქი გადასვლა ქვემოთ, რათა თეთრი ტექსტი ღია სურათებზეც იდეალურად გამოჩნდეს
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+    z-index: 2;
 
     .info-category {
       color: $gold;
