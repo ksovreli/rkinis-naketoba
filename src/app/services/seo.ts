@@ -13,7 +13,6 @@ export class SeoService {
   updateMeta(config: { title: string; description: string; image?: string }) {
     const fullTitle = `${config.title} | რკინის ნაკეთობები`;
     
-    // განვსაზღვროთ ბაზისური URL უსაფრთხოდ (სერვერზეც და კლიენტზეც)
     let baseUrl = '';
     let currentUrl = '';
 
@@ -28,17 +27,14 @@ export class SeoService {
         currentUrl = baseUrl;
       }
     } else {
-      // კლიენტის მხარეს (ბრაუზერში) პირდაპირ გვაქვს დოკუმენტი
       baseUrl = this.document.location?.origin || '';
       currentUrl = this.document.URL || '';
     }
 
-    // სურათის სრული მისამართის აწყობა
     const imageUrl = config.image 
       ? (config.image.startsWith('http') ? config.image : `${baseUrl}/${config.image}`)
       : `${baseUrl}/images/og-main.jpg`;
 
-    // თეგების განახლება
     this.title.setTitle(fullTitle);
     this.meta.updateTag({ name: 'description', content: config.description });
     

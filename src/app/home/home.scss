@@ -331,13 +331,13 @@ $sp-8: 128px;
     }
   }
 }
-
 // ================================================================
 // SCROLL INDICATOR
 // ================================================================
 .scroll-indicator {
   position: absolute;
-  bottom: 30px;
+  top: 88%;
+  bottom: 0px;
   left: 50%;
   translate: -50% 0;
   z-index: 2;
