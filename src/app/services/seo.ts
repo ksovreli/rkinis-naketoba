@@ -23,7 +23,7 @@ export class SeoService {
         baseUrl = `${protocol}://${host}`;
         currentUrl = `${baseUrl}${this.request.url || ''}`;
       } else {
-        baseUrl = 'http://localhost:4200';
+        baseUrl = 'https://rkinissaamqro.ge';
         currentUrl = baseUrl;
       }
     } else {
@@ -33,7 +33,7 @@ export class SeoService {
 
     const imageUrl = config.image 
       ? (config.image.startsWith('http') ? config.image : `${baseUrl}/${config.image}`)
-      : `${baseUrl}/images/og-main.jpg`;
+      : `${baseUrl}/images/chishkari2.webp`;
 
     this.title.setTitle(fullTitle);
     this.meta.updateTag({ name: 'description', content: config.description });

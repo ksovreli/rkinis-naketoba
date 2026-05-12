@@ -1,8 +1,26 @@
 import { Component, computed, inject, signal, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
-import { CommonModule, isPlatformBrowser, NgOptimizedImage, DOCUMENT } from '@angular/common'; // დაემატა DOCUMENT
+import { CommonModule, isPlatformBrowser, NgOptimizedImage, DOCUMENT } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { SeoService } from '../services/seo';
+
+// ─── სლაგების მეპინგი ორმხრივი კონვერტაციისთვის ───────────────────
+const slugMap: { [key: string]: string } = {
+  'ყველა': 'main',
+  'კარი': 'kari',
+  'ჭიშკარი': 'chishkari',
+  'მოაჯირი': 'moajiri',
+  'გისოსი': 'gisosi'
+};
+
+// შებრუნებული ობიექტი როუტიდან წამოსული ლათინური სიტყვის გასაშიფრად
+const reverseSlugMap: { [key: string]: string } = {
+  'main': 'ყველა',
+  'kari': 'კარი',
+  'chishkari': 'ჭიშკარი',
+  'moajiri': 'მოაჯირი',
+  'gisosi': 'გისოსი'
+};
 
 @Component({
   selector: 'app-gallery',
@@ -32,18 +50,12 @@ export class Gallery implements OnInit, OnDestroy {
     this.productService.loadProducts();
     
     this.route.params.subscribe(params => {
-      const cat = params['category'] ? decodeURIComponent(params['category']) : 'ყველა';
+      const paramCat = params['category'];
+      
+      const cat = paramCat ? (reverseSlugMap[paramCat] || decodeURIComponent(paramCat)) : 'ყველა';
       this.selectedCategory.set(cat);
       
-      const imageMap: { [key: string]: string } = {
-        'ყველა': 'main',
-        'კარი': 'kari',
-        'ჭიშკარი': 'chishkari',
-        'მოაჯირი': 'moajiri',
-        'გისოსი': 'gisosi'
-      };
-      
-      const imgSlug = imageMap[cat] || 'main';
+      const imgSlug = slugMap[cat] || 'main';
       
       this.seo.updateMeta({
         title: cat === 'ყველა' ? 'ჩვენი ნამუშევრები' : cat,
@@ -56,6 +68,7 @@ export class Gallery implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     if (this.isBrowser) {
       this.doc.body.style.overflow = '';
+      this.doc.documentElement.style.overflow = '';
     }
   }
 
@@ -84,7 +97,12 @@ export class Gallery implements OnInit, OnDestroy {
 
   setCategory(category: string) {
     if (this.selectedCategory() === category) return;
-    const target = category === 'ყველა' ? ['/chveni-namushevrebi'] : ['/chveni-namushevrebi', category];
+    
+    const slug = slugMap[category] || category;
+    const target = category === 'ყველა' 
+      ? ['/chveni-namushevrebi'] 
+      : ['/chveni-namushevrebi', slug];
+      
     this.router.navigate(target);
   }
 

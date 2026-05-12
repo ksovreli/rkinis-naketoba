@@ -12,7 +12,7 @@ export class ProductService {
   private platformId = inject(PLATFORM_ID);
   private request = inject('REQUEST' as any, { optional: true }) as any;
 
-  private jsonUrl = 'data/products.json'; 
+  private jsonUrl = 'data/products.json';
 
   products = signal<Product[]>([]);
   isLoading = signal<boolean>(false);
@@ -29,16 +29,16 @@ export class ProductService {
         const host = this.request.get ? this.request.get('host') : this.request.headers?.host;
         finalUrl = `${protocol}://${host}/${this.jsonUrl}`;
       } else {
-        finalUrl = `http://localhost:4200/${this.jsonUrl}`;
+        finalUrl = `https://rkinissaamqro.ge/${this.jsonUrl}`;
       }
     }
-    
+
     this.http.get<Product[]>(finalUrl)
       .pipe(
         first(),
         catchError((err) => {
           console.error('მონაცემები ვერ ჩაიტვირთა:', err);
-          return of([]); 
+          return of([]);
         }),
         finalize(() => this.isLoading.set(false))
       )
@@ -46,8 +46,8 @@ export class ProductService {
         const formattedData = data.map(p => ({
           ...p,
           // შემოწმება: თუ იწყება 'http'-ით ან უკვე უწერია 'images/', არაფერი შევცვალოთ
-          imageUrl: p.imageUrl.startsWith('http') || p.imageUrl.startsWith('images/') 
-            ? p.imageUrl 
+          imageUrl: p.imageUrl.startsWith('http') || p.imageUrl.startsWith('images/')
+            ? p.imageUrl
             : `images/${p.imageUrl}`
         }));
         this.products.set(formattedData);
