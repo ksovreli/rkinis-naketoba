@@ -4,20 +4,16 @@
     <div class="hero-overlay"></div>
 
     <div class="hero-content">
-      <div class="hero-tag">20 წლიანი გამოცდილებით</div>
+      <div class="hero-tag">რკინის ნაკეთობების დამზადება თბილისში</div>
 
-  <div class="visually-hidden">
-    რკინის ნაკეთობები თბილისში, რკინის კარები, ჭიშკრები, მოაჯირები და გისოსები.
-  </div>
+      <h1>
+        შენი <span class="highlight">იდეა</span><br>
+        ჩვენი შესრულება
+      </h1>
 
-  <h1>
-    შენი <span class="highlight">იდეა</span><br>
-    ჩვენი შესრულება
-  </h1>
-
-  <p>
-    უნიკალური რკინის ნაკეთობები, რომლებიც სიმშვიდეს, სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
-  </p>
+      <p>
+        უნიკალური რკინის ნაკეთობები, რომლებიც სიმშვიდეს, სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
+      </p>
 
       <div class="hero-btns">
         <a routerLink="/ჩვენი-ნამუშევრები" class="btn-primary">ნამუშევრების ნახვა</a>
@@ -26,7 +22,7 @@
     </div>
 
     <div class="scroll-indicator">
-      <span>ჩასქროლე!</span>
+      <span class="exp-text">20 წლიანი გამოცდილებით</span>
       <div class="mouse"></div>
     </div>
   </section>
@@ -48,11 +44,7 @@
           [attr.aria-label]="card.name + ' - დეტალურად'">
           <div class="card-inner">
             <div class="card-img">
-              <img 
-                [ngSrc]="card.image || ''" 
-                [alt]="card.name + ' დამზადება და დიზაინი'"
-                fill
-                [priority]="i < 2"> 
+              <img [ngSrc]="card.image || ''" [alt]="card.name + ' დამზადება და დიზაინი'" fill [priority]="i < 2">
               <div class="card-badge">#0{{ i + 1 }}</div>
             </div>
             <div class="card-overlay">

@@ -64,7 +64,7 @@ $sp-8: 128px;
   white-space: nowrap !important;
   border: 0 !important;
 }
-  
+
 *,
 *::before,
 *::after {
@@ -95,7 +95,7 @@ $sp-8: 128px;
 // ================================================================
 .section-header {
   text-align: center;
-  margin-bottom: $sp-7;
+  margin-bottom: 60px;
 
   .pre-title {
     display: inline-flex;
@@ -176,7 +176,7 @@ $sp-8: 128px;
   transform: translateZ(0);
 
   @media (min-width: 769px) {
-    background-attachment: scroll; // შეცვალე fixed-დან scroll-ზე
+    background-attachment: scroll;
   }
 
   // Multi-layer cinematic overlay
@@ -203,7 +203,7 @@ $sp-8: 128px;
     align-items: center;
     gap: $sp-2;
     color: $gold;
-    letter-spacing: 6px;
+    letter-spacing: 4px;
     text-transform: uppercase;
     font-family: $mono;
     font-size: 0.72rem;
@@ -214,10 +214,10 @@ $sp-8: 128px;
     &::before,
     &::after {
       content: '';
-      width: 20px;
+      width: 24px;
       height: 1px;
       background: $gold;
-      opacity: 0.6;
+      opacity: 0.5;
     }
   }
 
@@ -231,14 +231,14 @@ $sp-8: 128px;
     animation: heroReveal 1s $ease-out 0.15s both;
 
     .hero-sub {
-    display: block;
-    font-size: 14px; // ბევრად პატარა ზომა
-    text-transform: uppercase; // დიდ ასოებზე გადაყვანა
-    letter-spacing: 3px; // ასოებს შორის დაშორება (ძალიან ესთეტიკურს ხდის)
-    color: #c5a059; // შენი ოქროსფერი თემა
-    margin-bottom: 10px; // სათაურთან დაშორება
-    font-weight: 600;
-  }
+      display: block;
+      font-size: 14px;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: #c5a059;
+      margin-bottom: 10px;
+      font-weight: 600;
+    }
 
     .highlight {
       color: $gold;
@@ -348,12 +348,14 @@ $sp-8: 128px;
   opacity: 0.5;
   animation: fadeIn 1.5s 1.5s ease both;
 
+ 
   span {
     font-family: $mono;
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     letter-spacing: 4px;
     text-transform: uppercase;
     color: $text-2;
+    margin-bottom: 5px;
   }
 
   .mouse {
@@ -478,12 +480,13 @@ $sp-8: 128px;
 
       img {
         width: 100%;
-  height: 100%;
-  object-fit: cover;
-  image-rendering: -webkit-optimize-contrast; /* უკეთესი რენდერისთვის */
-  filter: brightness(0.65) saturate(0.85);
-  transition: transform 0.8s $ease-out, filter 0.5s ease;
-  will-change: transform;
+        height: 100%;
+        object-fit: cover;
+        image-rendering: -webkit-optimize-contrast;
+        /* უკეთესი რენდერისთვის */
+        filter: brightness(0.65) saturate(0.85);
+        transition: transform 0.8s $ease-out, filter 0.5s ease;
+        will-change: transform;
       }
 
       .card-badge {
