@@ -11,7 +11,7 @@ export const routes: Routes = [
     title: 'მთავარი - რკინის ნაკეთობა' 
   },
   { 
-    path: 'ჩვენი-ნამუშევრები', 
+    path: 'chveni-namushevrebi', 
     children: [
       {
         path: '',
@@ -26,12 +26,12 @@ export const routes: Routes = [
     ]
   },
   {
-    path: 'ჩვენს-შესახებ',
+    path: 'chvens-shesakheb',
     component: AboutUs,
     title: 'ჩვენს შესახებ - რკინის ნაკეთობა'
   },
   { 
-    path: 'კონტაქტი', 
+    path: 'kontakti', 
     component: Contact,
     title: 'კონტაქტი - რკინის ნაკეთობა' 
   },

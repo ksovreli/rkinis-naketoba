@@ -1,4 +1,4 @@
-import { Component, Inject, PLATFORM_ID, signal, NgZone, OnInit, OnDestroy } from '@angular/core';
+import { Component, Inject, PLATFORM_ID, signal, NgZone, OnInit, OnDestroy, DOCUMENT } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { fromEvent, Subscription } from 'rxjs';
@@ -19,7 +19,8 @@ export class Header implements OnInit, OnDestroy {
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
-    private ngZone: NgZone // ვიყენებთ NgZone-ს
+    @Inject(DOCUMENT) private doc: Document,
+    private ngZone: NgZone
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -48,10 +49,18 @@ export class Header implements OnInit, OnDestroy {
   }
 
   toggleMenu() {
-    this.isMenuOpen.set(!this.isMenuOpen());
+    const nextState = !this.isMenuOpen();
+    this.isMenuOpen.set(nextState);
+
+    if (this.isBrowser) {
+      this.doc.body.style.overflow = nextState ? 'hidden' : '';
+    }
   }
 
   closeMenu() {
     this.isMenuOpen.set(false);
+    if (this.isBrowser) {
+      this.doc.body.style.overflow = '';
+    }
   }
 }

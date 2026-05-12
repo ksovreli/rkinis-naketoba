@@ -1,14 +1,12 @@
 import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
-  // დედა როუტი
   {
-    path: 'ჩვენი-ნამუშევრები',
+    path: 'chveni-namushevrebi',
     renderMode: RenderMode.Prerender
   },
-  // შვილობილი (კატეგორიების) როუტი
   {
-    path: 'ჩვენი-ნამუშევრები/:category',
+    path: 'chveni-namushevrebi/:category',
     renderMode: RenderMode.Prerender,
     async getPrerenderParams() {
       return [
@@ -19,7 +17,6 @@ export const serverRoutes: ServerRoute[] = [
       ];
     }
   },
-  // ყველა სხვა დანარჩენი გვერდი
   {
     path: '**',
     renderMode: RenderMode.Prerender

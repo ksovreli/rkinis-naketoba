@@ -16,8 +16,8 @@
       </p>
 
       <div class="hero-btns">
-        <a routerLink="/ჩვენი-ნამუშევრები" class="btn-primary">ნამუშევრების ნახვა</a>
-        <a routerLink="/კონტაქტი" class="btn-secondary">დაგვიკავშირდით</a>
+        <a routerLink="/chveni-namushevrebi" class="btn-primary">ნამუშევრების ნახვა</a>
+        <a routerLink="/kontakti" class="btn-secondary">დაგვიკავშირდით</a>
       </div>
     </div>
 
@@ -40,7 +40,7 @@
       <div class="works-grid">
         @for (card of categoryCards(); track card.name; let i = $index) {
 
-        <a [routerLink]="['/ჩვენი-ნამუშევრები', card.name]" class="work-card"
+        <a [routerLink]="['/chveni-namushevrebi', card.name]" class="work-card"
           [attr.aria-label]="card.name + ' - დეტალურად'">
           <div class="card-inner">
             <div class="card-img">
@@ -65,7 +65,7 @@
       </div>
 
       <div class="footer-action">
-        <a routerLink="/ჩვენი-ნამუშევრები" class="btn-outline">ყველა ნამუშევარი</a>
+        <a routerLink="/chveni-namushevrebi" class="btn-outline">ყველა ნამუშევარი</a>
       </div>
     </div>
   </section>
@@ -113,7 +113,7 @@
   <section class="final-cta">
     <div class="container">
       <h2>მზად ხართ თქვენი იდეის განსახორციელებლად?</h2>
-      <a routerLink="/კონტაქტი" class="btn-primary large">დაგვიკავშირდით დღეს</a>
+      <a routerLink="/kontakti" class="btn-primary large">დაგვიკავშირდით დღეს</a>
     </div>
   </section>
 

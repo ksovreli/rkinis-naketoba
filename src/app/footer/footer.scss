@@ -235,6 +235,32 @@ $f-text-muted: rgba(255, 255, 255, 0.5);
   }
 }
 
+// ============================================================
+// MOBILE RESPONSIVE
+// ============================================================
+@media (max-width: 992px) {
+  .premium-footer {
+    .footer-links {
+      ul {
+        li {
+          a:not(.contact-link):hover {
+            transform: none !important; 
+            color: $f-gold;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .premium-footer {
+    .social-box {
+      margin-bottom: 15px; 
+    }
+  }
+}
+
 // --- Keyframes ---
 @keyframes slide-glow {
   0% {

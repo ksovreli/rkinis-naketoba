@@ -1,5 +1,5 @@
 import { Component, computed, inject, signal, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
-import { CommonModule, isPlatformBrowser, NgOptimizedImage } from '@angular/common';
+import { CommonModule, isPlatformBrowser, NgOptimizedImage, DOCUMENT } from '@angular/common'; // დაემატა DOCUMENT
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { SeoService } from '../services/seo';
@@ -21,7 +21,10 @@ export class Gallery implements OnInit, OnDestroy {
   selectedCategory = signal<string>('ყველა');
   selectedImage = signal<any | null>(null);
 
-  constructor(@Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(
+    @Inject(PLATFORM_ID) private platformId: Object,
+    @Inject(DOCUMENT) private doc: Document
+  ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
 
@@ -32,7 +35,6 @@ export class Gallery implements OnInit, OnDestroy {
       const cat = params['category'] ? decodeURIComponent(params['category']) : 'ყველა';
       this.selectedCategory.set(cat);
       
-      // ქართული კატეგორიების შესაბამისობა ინგლისურ სურათების სახელებთან SEO-სთვის
       const imageMap: { [key: string]: string } = {
         'ყველა': 'main',
         'კარი': 'kari',
@@ -46,14 +48,14 @@ export class Gallery implements OnInit, OnDestroy {
       this.seo.updateMeta({
         title: cat === 'ყველა' ? 'ჩვენი ნამუშევრები' : cat,
         description: `${cat} - უმაღლესი ხარისხის რკინის ნაკეთობების ფართო არჩევანი. დაათვალიერეთ ჩვენი გალერეა.`,
-        image: `/images/og-${imgSlug}.jpg` // 👈 უსაფრთხო, ინგლისური დასახელება
+        image: `/images/og-${imgSlug}.jpg`
       });
     });
   }
 
   ngOnDestroy(): void {
     if (this.isBrowser) {
-      document.body.style.overflow = '';
+      this.doc.body.style.overflow = '';
     }
   }
 
@@ -82,20 +84,22 @@ export class Gallery implements OnInit, OnDestroy {
 
   setCategory(category: string) {
     if (this.selectedCategory() === category) return;
-    const target = category === 'ყველა' ? ['/ჩვენი-ნამუშევრები'] : ['/ჩვენი-ნამუშევრები', category];
+    const target = category === 'ყველა' ? ['/chveni-namushevrebi'] : ['/chveni-namushevrebi', category];
     this.router.navigate(target);
   }
 
   openImage(item: any) {
     if (this.isBrowser) {
-      document.body.style.overflow = 'hidden';
+      this.doc.body.style.overflow = 'hidden';
+      this.doc.documentElement.style.overflow = 'hidden';
     }
     this.selectedImage.set(item);
   }
 
   closeImage() {
     if (this.isBrowser) {
-      document.body.style.overflow = '';
+      this.doc.body.style.overflow = '';
+      this.doc.documentElement.style.overflow = '';
     }
     this.selectedImage.set(null);
   }

@@ -14,16 +14,16 @@
       <ul class="nav-links">
         <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
             (click)="closeMenu()">მთავარი</a></li>
-        <li><a routerLink="/ჩვენი-ნამუშევრები" routerLinkActive="active" (click)="closeMenu()">ჩვენი ნამუშევრები</a>
+        <li><a routerLink="/chveni-namushevrebi" routerLinkActive="active" (click)="closeMenu()">ჩვენი ნამუშევრები</a>
         </li>
-        <li><a routerLink="/ჩვენს-შესახებ" routerLinkActive="active" (click)="closeMenu()">ჩვენს შესახებ</a></li>
-        <li><a routerLink="/კონტაქტი" routerLinkActive="active" (click)="closeMenu()">კონტაქტი</a></li>
+        <li><a routerLink="/chvens-shesakheb" routerLinkActive="active" (click)="closeMenu()">ჩვენს შესახებ</a></li>
+        <li><a routerLink="/kontakti" routerLinkActive="active" (click)="closeMenu()">კონტაქტი</a></li>
       </ul>
     </nav>
 
     <!-- Call to Action (Optional) -->
     <div class="header-actions">
-      <button routerLink="/კონტაქტი" class="cta-btn">დაგვიკავშირდით</button>
+      <button routerLink="/kontakti" class="cta-btn">დაგვიკავშირდით</button>
 
       <!-- Burger -->
       <button class="burger" (click)="toggleMenu()" [class.active]="isMenuOpen()" [attr.aria-expanded]="isMenuOpen()"
