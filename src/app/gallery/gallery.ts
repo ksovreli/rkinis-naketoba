@@ -57,8 +57,13 @@ export class Gallery implements OnInit, OnDestroy {
       
       const imgSlug = slugMap[cat] || 'main';
       
+      // დინამიური და SEO-ზე ოპტიმიზირებული სათაური
+      const pageTitle = cat === 'ყველა' 
+        ? 'ჩვენი ნამუშევრები | რკინის ნაკეთობები' 
+        : `${cat} | რკინის ნაკეთობები`;
+      
       this.seo.updateMeta({
-        title: cat === 'ყველა' ? 'ჩვენი ნამუშევრები' : cat,
+        title: pageTitle,
         description: `${cat} - უმაღლესი ხარისხის რკინის ნაკეთობების ფართო არჩევანი. დაათვალიერეთ ჩვენი გალერეა.`,
         image: `/images/og-${imgSlug}.jpg`
       });
