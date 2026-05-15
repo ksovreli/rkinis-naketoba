@@ -507,9 +507,8 @@ $ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 60px 35px 40px; // ზემოდან მეტი დაშორება გრადიენტისთვის
-    // მუქი გადასვლა ქვემოთ, რათა თეთრი ტექსტი ღია სურათებზეც იდეალურად გამოჩნდეს
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 60%, transparent 100%);
+    padding: 60px 35px 40px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.5) 30%, transparent 100%);
     z-index: 2;
 
     .info-category {

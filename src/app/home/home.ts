@@ -34,9 +34,9 @@ export class Home {
     const products = this.productService.products();
     const manualImages: Record<Category, string> = {
       'ჭიშკარი': 'images/chishkari1.webp',
-      'კარი': 'images/kari18.webp',
+      'კარი': 'images/kari1.webp',
       'მოაჯირი': 'images/moajiri4.webp',
-      'გისოსი': 'images/gisosi5.webp'
+      'გისოსი': 'images/gisosi1.webp'
     };
 
     return this.categories.map((cat, i) => {
