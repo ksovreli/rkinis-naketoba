@@ -76,17 +76,6 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         margin: 0 auto;
       }
     }
-
-    .brand-signature {
-      margin-top: 40px;
-      font-family: $mono;
-      font-size: 0.8rem;
-      letter-spacing: 3px;
-      opacity: 0.8;
-      border-bottom: 1px solid rgba($gold, 0.4);
-      display: inline-block;
-      padding-bottom: 5px;
-    }
   }
 
   // ─── IMAGE SIDE ───────────────────────────────────────────────
@@ -161,14 +150,17 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         .about-img {
           transform: translate3d(-10px, -10px, 0) !important;
         }
+
         .image-frame {
           top: 10px !important;
           right: -10px !important;
         }
+
         &:hover {
           .about-img {
             transform: translate3d(0, 0, 0) !important;
           }
+
           .image-frame {
             transform: translate3d(-10px, -10px, 0) !important;
           }
@@ -180,13 +172,13 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 
 @media (max-width: 576px) {
   .about-minimal {
-    padding: 80px 0 !important;
 
     .content-side {
       h1 {
         font-size: 2.2rem !important;
         margin-bottom: 25px;
       }
+
       .description p {
         font-size: 1rem !important;
         line-height: 1.6 !important;

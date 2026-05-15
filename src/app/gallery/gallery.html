@@ -1,7 +1,13 @@
 <section class="premium-gallery">
   <header class="gallery-header">
     <span class="pre-title">სიზუსტე დეტალებში</span>
-    <h1 class="main-title">ჩვენი <span class="gold">ნამუშევრები</span></h1>
+    <h1 class="main-title">
+      @if (selectedCategory() === 'ყველა') {
+      ჩვენი <span class="gold">ნამუშევრები</span>
+      } @else {
+      <span class="gold">{{ selectedCategory() }}</span>
+      }
+    </h1>
     <div class="premium-divider">
       <span class="line"></span>
       <span class="diamond"></span>
@@ -12,10 +18,8 @@
   <nav class="filter-bar" aria-label="კატეგორიების ფილტრი">
     <div class="filter-track">
       @for (cat of categories(); track cat) {
-      <button class="filter-btn" 
-              [class.active]="selectedCategory() === cat" 
-              (click)="setCategory(cat)"
-              [attr.aria-pressed]="selectedCategory() === cat">
+      <button class="filter-btn" [class.active]="selectedCategory() === cat" (click)="setCategory(cat)"
+        [attr.aria-pressed]="selectedCategory() === cat">
         {{ cat }}
       </button>
       }
@@ -27,27 +31,27 @@
     <div class="custom-spinner" aria-label="მიმდინარეობს ჩატვირთვა"></div>
   </div>
   } @else {
- <div class="gallery-grid">
-  @for (item of filteredProducts(); track item.id; let i = $index) {
-  <button class="work-card" (click)="openImage(item)" [attr.aria-label]="item.customTitle + ' - სურათის გახსნა'">
-    <div class="card-media">
-      <img [ngSrc]="item.imageUrl" [alt]="item.customTitle" fill [priority]="i < 2" class="premium-img">
+  <div class="gallery-grid">
+    @for (item of filteredProducts(); track item.id; let i = $index) {
+    <button class="work-card" (click)="openImage(item)" [attr.aria-label]="item.customTitle + ' - სურათის გახსნა'">
+      <div class="card-media">
+        <img [ngSrc]="item.imageUrl" [alt]="item.customTitle" fill [priority]="i < 2" class="premium-img">
 
-      <div class="card-hover-info">
-        <span class="plus" aria-hidden="true">+</span>
-        <p>დათვალიერება</p>
+        <div class="card-hover-info">
+          <span class="plus" aria-hidden="true">+</span>
+          <p>დათვალიერება</p>
+        </div>
+        <div class="badge">№{{ i + 1 }}</div>
       </div>
-      <div class="badge">№{{ i + 1 }}</div> 
-    </div>
-    <div class="card-body">
-      <span class="category-tag">{{ item.category }}</span>
-      <div class="title-row">
-        <h3 class="title">{{ item.customTitle }}</h3>
+      <div class="card-body">
+        <span class="category-tag">{{ item.category }}</span>
+        <div class="title-row">
+          <h3 class="title">{{ item.customTitle }}</h3>
+        </div>
       </div>
-    </div>
-  </button>
-  }
-</div>
+    </button>
+    }
+  </div>
   }
 </section>
 

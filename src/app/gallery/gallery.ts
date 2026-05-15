@@ -34,7 +34,7 @@ export class Gallery implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private seo = inject(SeoService);
-  
+
   private isBrowser: boolean;
   selectedCategory = signal<string>('ყველა');
   selectedImage = signal<any | null>(null);
@@ -48,20 +48,20 @@ export class Gallery implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.productService.loadProducts();
-    
+
     this.route.params.subscribe(params => {
       const paramCat = params['category'];
-      
+
       const cat = paramCat ? (reverseSlugMap[paramCat] || decodeURIComponent(paramCat)) : 'ყველა';
       this.selectedCategory.set(cat);
-      
+
       const imgSlug = slugMap[cat] || 'main';
-      
-      // დინამიური და SEO-ზე ოპტიმიზირებული სათაური
-      const pageTitle = cat === 'ყველა' 
-        ? 'ჩვენი ნამუშევრები | რკინის ნაკეთობები' 
+
+      // დინამიური და SEO-ზე ოპტიმიზირებული სათაური ბრაუზერის ტაბისთვის
+      const pageTitle = cat === 'ყველა'
+        ? 'ჩვენი ნამუშევრები | რკინის ნაკეთობები'
         : `${cat} | რკინის ნაკეთობები`;
-      
+
       this.seo.updateMeta({
         title: pageTitle,
         description: `${cat} - უმაღლესი ხარისხის რკინის ნაკეთობების ფართო არჩევანი. დაათვალიერეთ ჩვენი გალერეა.`,
@@ -86,12 +86,37 @@ export class Gallery implements OnInit, OnDestroy {
     const category = this.selectedCategory();
     const allProducts = this.productService.products();
 
-    const filtered = category === 'ყველა'
-      ? allProducts
-      : allProducts.filter(p => p.category === category);
+    let result;
+
+    if (category === 'ყველა') {
+      const groups: { [key: string]: any[] } = {};
+      allProducts.forEach(p => {
+        if (!groups[p.category]) groups[p.category] = [];
+        groups[p.category].push(p);
+      });
+
+      const catNames = Object.keys(groups);
+      const mixed: any[] = [];
+      let hasMore = true;
+      let index = 0;
+
+      while (hasMore) {
+        hasMore = false;
+        for (const cat of catNames) {
+          if (groups[cat][index]) {
+            mixed.push(groups[cat][index]);
+            hasMore = true;
+          }
+        }
+        index++;
+      }
+      result = mixed;
+    } else {
+      result = allProducts.filter(p => p.category === category);
+    }
 
     const counters: { [key: string]: number } = {};
-    return filtered.map(item => {
+    return result.map(item => {
       counters[item.category] = (counters[item.category] || 0) + 1;
       return {
         ...item,
@@ -102,12 +127,12 @@ export class Gallery implements OnInit, OnDestroy {
 
   setCategory(category: string) {
     if (this.selectedCategory() === category) return;
-    
+
     const slug = slugMap[category] || category;
-    const target = category === 'ყველა' 
-      ? ['/chveni-namushevrebi'] 
+    const target = category === 'ყველა'
+      ? ['/chveni-namushevrebi']
       : ['/chveni-namushevrebi', slug];
-      
+
     this.router.navigate(target);
   }
 
