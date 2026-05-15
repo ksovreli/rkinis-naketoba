@@ -13,7 +13,6 @@ const slugMap: { [key: string]: string } = {
   'გისოსი': 'gisosi'
 };
 
-// შებრუნებული ობიექტი როუტიდან წამოსული ლათინური სიტყვის გასაშიფრად
 const reverseSlugMap: { [key: string]: string } = {
   'main': 'ყველა',
   'kari': 'კარი',
@@ -57,15 +56,29 @@ export class Gallery implements OnInit, OnDestroy {
 
       const imgSlug = slugMap[cat] || 'main';
 
-      // დინამიური და SEO-ზე ოპტიმიზირებული სათაური ბრაუზერის ტაბისთვის
+      // ─── სეო მრავლობითი სათაურების მეპინგი ტაბისთვის ───────────────────
+      const pluralMap: { [key: string]: string } = {
+        'კარი': 'კარები',
+        'ჭიშკარი': 'ჭიშკრები',
+        'მოაჯირი': 'მოაჯირები',
+        'გისოსი': 'გისოსები'
+      };
+      
+      const currentPlural = pluralMap[cat] || cat;
+
+      // ტაბის (Meta Title) სუფთა და ბრენდირებული სტრუქტურა
       const pageTitle = cat === 'ყველა'
-        ? 'ჩვენი ნამუშევრები | რკინის ნაკეთობები'
-        : `${cat} | რკინის ნაკეთობები`;
+        ? 'ჩვენი ნამუშევრები | rkinissaamqro.ge'
+        : `რკინის ${currentPlural} | rkinissaamqro.ge`;
+
+      const pageDesc = cat === 'ყველა'
+        ? 'იხილეთ ჩვენი ნამუშევრები: უმაღლესი ხარისხის რკინის კარები, ჭიშკრები, მოაჯირები და გისოსები შეკვეთით 20 წლიანი გამოცდილებით.'
+        : `პრემიუმ ხარისხის რკინის ${currentPlural} თბილისში ინდივიდუალური დიზაინითა და გარანტიით. დაათვალიერეთ ჩვენი ფოტო გალერეა.`;
 
       this.seo.updateMeta({
         title: pageTitle,
-        description: `${cat} - უმაღლესი ხარისხის რკინის ნაკეთობების ფართო არჩევანი. დაათვალიერეთ ჩვენი გალერეა.`,
-        image: `/images/og-${imgSlug}.jpg`
+        description: pageDesc,
+        image: `images/og-${imgSlug}.jpg`
       });
     });
   }

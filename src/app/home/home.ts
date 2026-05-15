@@ -24,8 +24,10 @@ export class Home {
     this.productService.loadProducts();
     
     this.seo.updateMeta({
-      title: 'მთავარი',
-      description: 'უმაღლესი ხარისხის რკინის ნაკეთობები 20 წლიანი გამოცდილებით. ჭიშკრები, მოაჯირები და ინდივიდუალური დიზაინი.',
+      title: 'rkinissaamqro.ge | რკინის ნაკეთობები | რკინის საამქრო',
+      
+      description: 'უმაღლესი ხარისხის რკინის ნაკეთობების დამზადება 20 წლიანი გამოცდილებით. ჭიშკრები, კარები, მოაჯირები და გისოსები ინდივიდუალური დიზაინითა და გარანტიით!',
+      
       image: 'images/chishkari1.webp'
     });
   }
@@ -37,7 +39,7 @@ export class Home {
       'კარი': 'images/kari1.webp',
       'მოაჯირი': 'images/moajiri4.webp',
       'გისოსი': 'images/gisosi1.webp'
-    };
+    }; 
 
     return this.categories.map((cat, i) => {
       const found = products.find(p => p.category === cat);

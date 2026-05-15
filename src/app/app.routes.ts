@@ -7,33 +7,28 @@ import { Contact } from './contact/contact';
 export const routes: Routes = [
   { 
     path: '', 
-    component: Home,
-    title: 'მთავარი - რკინის ნაკეთობა' 
+    component: Home
   },
   { 
     path: 'chveni-namushevrebi', 
     children: [
       {
         path: '',
-        component: Gallery,
-        title: 'ყველა ნამუშევარი - რკინის ნაკეთობა'
+        component: Gallery
       },
       {
         path: ':category',
-        component: Gallery,
-        title: 'ნამუშევრები კატეგორიის მიხედვით' 
+        component: Gallery
       }
     ]
   },
   {
     path: 'chvens-shesakheb',
-    component: AboutUs,
-    title: 'ჩვენს შესახებ - რკინის ნაკეთობა'
+    component: AboutUs
   },
   { 
     path: 'kontakti', 
-    component: Contact,
-    title: 'კონტაქტი - რკინის ნაკეთობა' 
+    component: Contact
   },
   { 
     path: '**', 
