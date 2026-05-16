@@ -12,9 +12,8 @@
       </h1>
 
       <p>
-        უნიკალური რკინის ნაკეთობები, რომლებიც სიმშვიდეს, სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
+        უნიკალური რკინის ნაკეთობები, რომლებიც სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
       </p>
-
       <div class="hero-btns">
         <a routerLink="/chveni-namushevrebi" class="btn-primary">ნამუშევრების ნახვა</a>
         <a routerLink="/kontakti" class="btn-secondary">დაგვიკავშირდით</a>
@@ -44,7 +43,8 @@
           [attr.aria-label]="card.name + ' - დეტალურად'">
           <div class="card-inner">
             <div class="card-img">
-              <img [ngSrc]="card.image || ''" [alt]="card.name + ' დამზადება და დიზაინი'" fill [priority]="i < 2">
+              <img [ngSrc]="card.image || ''" [alt]="'რკინის ' + card.name + ' დამზადება თბილისში - საუკეთესო დიზაინი'"
+                fill [priority]="i < 2">
               <div class="card-badge">#0{{ i + 1 }}</div>
             </div>
             <div class="card-overlay">
@@ -74,7 +74,7 @@
     <div class="container">
       <div class="section-header">
         <span class="pre-title">რატომ ჩვენ</span>
-        <h2>რას <span class="gold">გთავაზობთ ჩვენ</span></h2>
+        <h2>რატომ უნდა აირჩიოთ ჩვენი <span class="gold">რკინის საამქრო</span></h2>
         <div class="header-divider"></div>
       </div>
 

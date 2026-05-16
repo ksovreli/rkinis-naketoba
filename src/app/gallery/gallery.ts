@@ -78,7 +78,7 @@ export class Gallery implements OnInit, OnDestroy {
       this.seo.updateMeta({
         title: pageTitle,
         description: pageDesc,
-        image: `images/og-${imgSlug}.jpg`
+        image: `images/og-${imgSlug}.webp`
       });
     });
   }
