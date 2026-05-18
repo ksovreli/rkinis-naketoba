@@ -39,7 +39,10 @@
       <div class="works-grid">
         @for (card of categoryCards(); track card.name; let i = $index) {
 
-        <a [routerLink]="['/chveni-namushevrebi', card.name]" class="work-card"
+        @let slug = card.name === 'კარი' ? 'kari' : card.name === 'ჭიშკარი' ? 'chishkari' : card.name === 'მოაჯირი' ?
+        'moajiri' : 'gisosi';
+
+        <a [routerLink]="['/chveni-namushevrebi', slug]" class="work-card"
           [attr.aria-label]="card.name + ' - დეტალურად'">
           <div class="card-inner">
             <div class="card-img">
@@ -74,7 +77,7 @@
     <div class="container">
       <div class="section-header">
         <span class="pre-title">რატომ ჩვენ</span>
-        <h2>რატომ უნდა აირჩიოთ ჩვენი <span class="gold">რკინის საამქრო</span></h2>
+        <h2>რატომ უნდა აირჩიოთ ჩვენი <span class="gold">რკინის ნაკეთობები</span></h2>
         <div class="header-divider"></div>
       </div>
 

@@ -125,87 +125,84 @@ $ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
 
   // ─── Filter Bar ─────────────────────────────────────────────
   .filter-bar {
-    margin-bottom: 50px;
+  margin-bottom: 50px;
+  position: relative;
+  z-index: 2;
+
+  // დესკტოპზე ჩვეულებრივად ცენტრშია
+  .filter-track {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 20px;
+    flex-wrap: wrap;
+
+    // მობილურის ახალი, დახვეწილი ლოგიკა: ასოები აღარასდროს გადაიჭრება!
+    @media (max-width: 768px) {
+      display: grid; // Grid იდეალურია, რომ თანაბარი ბლოკები დასვას
+      grid-template-columns: repeat(2, 1fr); // ეკრანს ყოფს ზუსტად 2 თანაბარ სვეტად
+      gap: 10px; // დაცილება ღილაკებს შორის
+      padding: 0 16px;
+    }
+  }
+
+  .filter-btn {
+    display: inline-block;
+    text-decoration: none;
+    background: transparent;
+    border: 1px solid $border-subtle;
+    color: $text-dim;
+    padding: 12px 20px; // ოდნავ დავაპატარავეთ გვერდებზე პედინგი მობილურისთვის
+    cursor: pointer;
+    white-space: nowrap;
+    font-size: 0.75rem;
+    letter-spacing: 1px; // მობილურზე ოდნავ შევავიწროვეთ ასოები, რომ კარგად დაეტიოს
+    text-transform: uppercase;
+    border-radius: 2px;
     position: relative;
-    z-index: 2;
+    overflow: hidden;
+    text-align: center; // ტექსტი ყოველთვის ცენტრში იქნება
+    @include smooth-transition(0.3s);
 
-    .filter-track {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      padding: 0 20px;
-      flex-wrap: wrap;
-
-      @media (max-width: 768px) {
-        .filter-bar {
-          overflow-x: auto;
-          scroll-behavior: smooth;
-          -webkit-overflow-scrolling: touch;
-          scrollbar-width: none;
-
-          &::-webkit-scrollbar {
-            display: none;
-          }
-
-          .filter-track {
-            display: flex;
-            justify-content: center;
-            flex-wrap: nowrap;
-            gap: 12px;
-            width: max-content;
-            min-width: 100%;
-            padding: 5px 25px 15px;
-          }
-        }
+    // მობილურზე, თუ კატეგორიების კენტი რაოდენობა გაქვს (მაგალითად 5 ღილაკი)
+    // ბოლო ღილაკი ("გისოსი") გაიწელება მთლიან სიგანეზე, რომ ვიზუალი არ დაირღვეს
+    @media (max-width: 768px) {
+      &:last-child:nth-child(odd) {
+        grid-column: span 2;
       }
     }
 
-    .filter-btn {
-      background: transparent;
-      border: 1px solid $border-subtle;
-      color: $text-dim;
-      padding: 12px 28px;
-      cursor: pointer;
-      white-space: nowrap;
-      font-size: 0.75rem;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      border-radius: 2px;
-      position: relative;
-      overflow: hidden;
-      @include smooth-transition(0.3s);
+    &::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba($gold, 0.1), transparent);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+
+    &:hover {
+      border-color: rgba($gold, 0.5);
+      color: #fff;
+      transform: translateY(-2px);
 
       &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba($gold, 0.1), transparent);
-        opacity: 0;
-        transition: opacity 0.3s;
+        opacity: 1;
       }
+    }
 
-      &:hover {
-        border-color: rgba($gold, 0.5);
-        color: #fff;
-        transform: translateY(-2px);
+    &.active {
+      border-color: $gold;
+      color: $gold;
+      background: rgba($gold, 0.08);
+      @include gold-glow(0.1);
 
-        &::before {
-          opacity: 1;
-        }
-      }
-
-      &.active {
-        border-color: $gold;
-        color: $gold;
-        background: rgba($gold, 0.08);
-        @include gold-glow(0.1);
-
-        &::before {
-          opacity: 1;
-        }
+      &::before {
+        opacity: 1;
       }
     }
   }
+}
 
   // ─── Gallery Grid ───────────────────────────────────────────
   .gallery-grid {

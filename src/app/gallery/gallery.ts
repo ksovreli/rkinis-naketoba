@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal, OnInit, OnDestroy, PLATFORM_ID, Inject } from '@angular/core';
 import { CommonModule, isPlatformBrowser, NgOptimizedImage, DOCUMENT } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { SeoService } from '../services/seo';
 
@@ -24,7 +24,7 @@ const reverseSlugMap: { [key: string]: string } = {
 @Component({
   selector: 'app-gallery',
   standalone: true,
-  imports: [CommonModule, NgOptimizedImage],
+  imports: [CommonModule, NgOptimizedImage, RouterModule],
   templateUrl: './gallery.html',
   styleUrl: './gallery.scss'
 })
@@ -51,38 +51,62 @@ export class Gallery implements OnInit, OnDestroy {
     this.route.params.subscribe(params => {
       const paramCat = params['category'];
 
-      const cat = paramCat ? (reverseSlugMap[paramCat] || decodeURIComponent(paramCat)) : 'ყველა';
-      this.selectedCategory.set(cat);
+      // 1. თუ პარამეტრი საერთოდ არ არის, ესე იგი "ყველა"-ზეა
+      if (!paramCat) {
+        this.selectedCategory.set('ყველა');
+        this.updateSEO('ყველა');
+        return;
+      }
 
-      const imgSlug = slugMap[cat] || 'main';
+      // 2. ვამოწმებთ, არის თუ არა მოსული პარამეტრი ჩვენს ლათინურ Reverse Map-ში
+      if (reverseSlugMap[paramCat]) {
+        // თუ ლათინურია (მაგ. 'kari'), ჩვეულებრივად ვსვამთ ქართულ სახელს ფილტრისთვის
+        this.selectedCategory.set(reverseSlugMap[paramCat]);
+        this.updateSEO(reverseSlugMap[paramCat]);
+      } else {
+        // 3. 🚨 თუ მოსული პარამეტრი ქართულია (ან დაშიფრული ქართული)
+        const decodedCat = decodeURIComponent(paramCat);
 
-      // ─── სეო მრავლობითი სათაურების მეპინგი ტაბისთვის ───────────────────
-      const pluralMap: { [key: string]: string } = {
-        'კარი': 'კარები',
-        'ჭიშკარი': 'ჭიშკრები',
-        'მოაჯირი': 'მოაჯირები',
-        'გისოსი': 'გისოსები'
-      };
-      
-      const currentPlural = pluralMap[cat] || cat;
+        // ვეძებთ, გვაქვს თუ არა საერთოდ ასეთი კატეგორიის სლაგი
+        const correctSlug = slugMap[decodedCat];
 
-      // ტაბის (Meta Title) სუფთა და ბრენდირებული სტრუქტურა
-      const pageTitle = cat === 'ყველა'
-        ? 'ჩვენი ნამუშევრები | rkinissaamqro.ge'
-        : `რკინის ${currentPlural} | rkinissaamqro.ge`;
-
-      const pageDesc = cat === 'ყველა'
-        ? 'იხილეთ ჩვენი ნამუშევრები: უმაღლესი ხარისხის რკინის კარები, ჭიშკრები, მოაჯირები და გისოსები შეკვეთით 20 წლიანი გამოცდილებით.'
-        : `პრემიუმ ხარისხის რკინის ${currentPlural} თბილისში ინდივიდუალური დიზაინითა და გარანტიით. დაათვალიერეთ ჩვენი ფოტო გალერეა.`;
-
-      this.seo.updateMeta({
-        title: pageTitle,
-        description: pageDesc,
-        image: `images/og-${imgSlug}.webp`
-      });
+        if (correctSlug) {
+          // თუ ვიპოვეთ (მაგ. "კარი"-სთვის არის "kari"), ძალთ აკეთებს რედირექტს ლათინურ ლინკზე!
+          this.router.navigate(['/chveni-namushevrebi', correctSlug], { replaceUrl: true });
+        } else {
+          // თუ საერთოდ რაღაც სისულელე ჩაწერა ლინკში, გადავიყვანოთ მთავარ გალერეაზე
+          this.router.navigate(['/chveni-namushevrebi'], { replaceUrl: true });
+        }
+      }
     });
   }
 
+  // ბარემ სეო მენეჯმენტი ცალკე ფუნქციაში გავიტანოთ, კოდი რომ სუფთა იყოს
+  private updateSEO(cat: string) {
+    const imgSlug = slugMap[cat] || 'main';
+    const pluralMap: { [key: string]: string } = {
+      'კარი': 'კარები',
+      'ჭიშკარი': 'ჭიშკრები',
+      'მოაჯირი': 'მოაჯირები',
+      'გისოსი': 'გისოსები'
+    };
+
+    const currentPlural = pluralMap[cat] || cat;
+
+    const pageTitle = cat === 'ყველა'
+      ? 'ჩვენი ნამუშევრები | rkinissaamqro.ge'
+      : `რკინის ${currentPlural} | rkinissaamqro.ge`;
+
+    const pageDesc = cat === 'ყველა'
+      ? 'იხილეთ ჩვენი ნამუშევრები: უმაღლესი ხარისხის რკინის კარები, ჭიშკრები, მოაჯირები და გისოსები შეკვეთით 20 წლიანი გამოცდილებით.'
+      : `პრემიუმ ხარისხის რკინის ${currentPlural} თბილისში ინდივიდუალური დიზაინითა და გარანტიით. დაათვალიერეთ ჩვენი ფოტო გალერეა.`;
+
+    this.seo.updateMeta({
+      title: pageTitle,
+      description: pageDesc,
+      image: `images/og-${imgSlug}.webp`
+    });
+  }
   ngOnDestroy(): void {
     if (this.isBrowser) {
       this.doc.body.style.overflow = '';

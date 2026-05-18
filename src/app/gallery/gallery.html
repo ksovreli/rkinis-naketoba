@@ -17,11 +17,26 @@
 
   <nav class="filter-bar" aria-label="კატეგორიების ფილტრი">
     <div class="filter-track">
+      <a class="filter-btn" 
+         [class.active]="selectedCategory() === 'ყველა'"
+         [routerLink]="['/chveni-namushevrebi']"
+         (click)="setCategory('ყველა'); $event.preventDefault()"
+         [attr.aria-pressed]="selectedCategory() === 'ყველა'">
+         ყველა
+      </a>
+
       @for (cat of categories(); track cat) {
-      <button class="filter-btn" [class.active]="selectedCategory() === cat" (click)="setCategory(cat)"
-        [attr.aria-pressed]="selectedCategory() === cat">
-        {{ cat }}
-      </button>
+        @if (cat !== 'ყველა') {
+          @let slug = cat === 'კარი' ? 'kari' : cat === 'ჭიშკარი' ? 'chishkari' : cat === 'მოაჯირი' ? 'moajiri' : 'gisosi';
+          
+          <a class="filter-btn" 
+             [class.active]="selectedCategory() === cat"
+             [routerLink]="['/chveni-namushevrebi', slug]"
+             (click)="setCategory(cat); $event.preventDefault()"
+             [attr.aria-pressed]="selectedCategory() === cat">
+            {{ cat }}
+          </a>
+        }
       }
     </div>
   </nav>
