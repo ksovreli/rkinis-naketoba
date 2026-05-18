@@ -10,10 +10,10 @@ export const serverRoutes: ServerRoute[] = [
     renderMode: RenderMode.Prerender,
     async getPrerenderParams() {
       return [
-        { category: 'ჭიშკარი' },
-        { category: 'მოაჯირი' },
-        { category: 'კარი' },
-        { category: 'გისოსი' }
+        { category: 'chishkari' },
+        { category: 'moajiri' },
+        { category: 'kari' },
+        { category: 'gisosi' }
       ];
     }
   },
