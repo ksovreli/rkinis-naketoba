@@ -21,17 +21,10 @@ export class ProductService {
     if (this.products().length > 0 || this.isLoading()) return;
     this.isLoading.set(true);
 
-    let finalUrl = this.jsonUrl;
-
-    if (isPlatformServer(this.platformId)) {
-      if (this.request) {
-        const protocol = this.request.protocol || 'http';
-        const host = this.request.get ? this.request.get('host') : this.request.headers?.host;
-        finalUrl = `${protocol}://${host}/${this.jsonUrl}`;
-      } else {
-        finalUrl = `https://rkinissaamqro.ge/${this.jsonUrl}`;
-      }
-    }
+    // 🎯 ყველაზე მარტივი და მუშა ვერსია: 
+    // ყოველთვის გამოიყენე ფარდობითი გზა. 
+    // Angular/SSR ამას მშვენივრად ამუშავებს როგორც ლოკალურად, ისე ჰოსტინგზე.
+    const finalUrl = '/data/products.json';
 
     this.http.get<Product[]>(finalUrl)
       .pipe(
@@ -45,7 +38,6 @@ export class ProductService {
       .subscribe((data) => {
         const formattedData = data.map(p => ({
           ...p,
-          // შემოწმება: თუ იწყება 'http'-ით ან უკვე უწერია 'images/', არაფერი შევცვალოთ
           imageUrl: p.imageUrl.startsWith('http') || p.imageUrl.startsWith('images/')
             ? p.imageUrl
             : `images/${p.imageUrl}`

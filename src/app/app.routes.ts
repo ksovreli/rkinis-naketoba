@@ -5,34 +5,35 @@ import { AboutUs } from './about-us/about-us';
 import { Contact } from './contact/contact';
 
 export const routes: Routes = [
-  { 
-    path: '', 
+  {
+    path: '',
     component: Home
   },
-  { 
-    path: 'chveni-namushevrebi', 
-    children: [
-      {
-        path: '',
-        component: Gallery
-      },
-      {
-        path: ':category',
-        component: Gallery
-      }
-    ]
+  {
+    path: 'chveni-namushevrebi/',
+    component: Gallery
   },
   {
-    path: 'chvens-shesakheb',
+    path: 'chveni-namushevrebi/:category/',
+    component: Gallery
+  },
+  {
+    path: 'chvens-shesakheb/',
     component: AboutUs
   },
-  { 
-    path: 'kontakti', 
+  {
+    path: 'kontakti/',
     component: Contact
   },
-  { 
-    path: '**', 
-    redirectTo: '', 
-    pathMatch: 'full' 
+
+  { path: 'chveni-namushevrebi', redirectTo: 'chveni-namushevrebi/', pathMatch: 'full' },
+  { path: 'chvens-shesakheb', redirectTo: 'chvens-shesakheb/', pathMatch: 'full' },
+  { path: 'kontakti', redirectTo: 'kontakti/', pathMatch: 'full' },
+  
+  { path: 'chveni-namushevrebi/:category', redirectTo: 'chveni-namushevrebi/:category/', pathMatch: 'full' },
+
+  {
+    path: '**',
+    component: Home
   }
 ];
