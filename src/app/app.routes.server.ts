@@ -2,7 +2,7 @@ import { RenderMode, ServerRoute } from '@angular/ssr';
 
 export const serverRoutes: ServerRoute[] = [
   {
-    path: 'chveni-namushevrebi',
+    path: 'chveni-namushevrebi/',
     renderMode: RenderMode.Prerender
   },
   {
@@ -16,6 +16,10 @@ export const serverRoutes: ServerRoute[] = [
         { category: 'gisosi' }
       ];
     }
+  },
+  {
+    path: 'chvens-shesakheb/',
+    renderMode: RenderMode.Prerender
   },
   {
     path: '**',
