@@ -1,25 +1,31 @@
-$gold: #c5a059;
-$gold-light: #e6ce9e;
-$gold-dark: #866d3e;
-$gold-glow: rgba(197, 160, 89, 0.18);
-$dark: #080808;
-$surface-1: #0d0d0d;
-$surface-2: #121212;
-$surface-3: #1a1a1a;
-$border-dim: rgba(255, 255, 255, 0.05);
-$border-gold: rgba(197, 160, 89, 0.25);
-$text-1: #f5f5f5;
-$text-2: #aaaaaa;
-$text-3: #666666;
+// ================================================================
+// TOKENS & MIXINS (განახლებული - უფრო ღია ტონები კლიენტისთვის)
+// ================================================================
+$gold: #c9a25a;
+$gold-light: #ecd29a;
+$gold-dark: #8a6f3c;
+$gold-glow: rgba(201, 162, 90, 0.16);
+
+/* 🎯 აი ეს 4 ფერი შევცვალე (წავედით ღია გრაფიტისფერში და რბილ ტონებში) */
+$dark: #1e1e22;       // #0a0a0b-ის ნაცვლად (მთავარი ფონი გაღიავდა)
+$surface-1: #252529;  // #111113-ის ნაცვლად (ბლოკების ფონი)
+$surface-2: #2d2d32;  // #161619-ის ნაცვლად
+$surface-3: #36363c;  // #1d1d21-ის ნაცვლად
+
+$border-dim: rgba(255, 255, 255, 0.08);
+$border-gold: rgba(201, 162, 90, 0.28);
+
+/* ტექსტები დავტოვოთ თეთრი/მკვეთრი, რომ ამ ახალ ფონზე იდეალურად იკითხებოდეს */
+$text-1: #ffffff;     
+$text-2: #e2e0db;     
+$text-3: #aaaaaa;     
+
 $ease-out: cubic-bezier(0.19, 1, 0.22, 1);
 $ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
-
-// Typography
 $serif: 'Playfair Display', 'Georgia', serif;
 $mono: 'JetBrains Mono', 'Courier New', monospace;
 $sans: 'Montserrat', 'Helvetica Neue', sans-serif;
 
-// Spacing Scale (8px base)
 $sp-1: 8px;
 $sp-2: 16px;
 $sp-3: 24px;
@@ -29,31 +35,23 @@ $sp-6: 64px;
 $sp-7: 96px;
 $sp-8: 128px;
 
+@mixin smooth($duration: 0.5s) {
+  transition: transform $duration $ease-out, opacity $duration $ease-out, box-shadow $duration $ease-out, border-color 0.4s ease, background-color 0.3s ease, color 0.3s ease;
+}
+
 // ================================================================
 // MIXINS
 // ================================================================
 @mixin gold-glow($intensity: 0.2) {
   box-shadow:
-    0 0 20px rgba($gold, $intensity),
-    0 0 40px rgba($gold, $intensity * 0.5);
-}
-
-@mixin smooth-transition($duration: 0.5s) {
-  transition: transform $duration $ease-out,
-    opacity $duration $ease-out,
-    box-shadow $duration $ease-out,
-    background-color 0.3s ease;
-}
-
-@mixin glass-effect($opacity: 0.08) {
-  background: rgba(255, 255, 255, $opacity);
+    0 0 24px rgba($gold, $intensity),
+    0 0 48px rgba($gold, $intensity * 0.5);
 }
 
 
 // ================================================================
-// ACCESSIBILITY & SEO HELPERS
+// BASE
 // ================================================================
-
 *,
 *::before,
 *::after {
@@ -66,15 +64,62 @@ $sp-8: 128px;
   color: $text-1;
   overflow-x: hidden;
   font-family: $sans;
+  background: $dark;
 }
 
 .container {
-  max-width: 1400px;
+  max-width: 1320px;
   margin: 0 auto;
   padding: 0 $sp-4;
 
   @media (max-width: 768px) {
-    padding: 0 $sp-2;
+    padding: 0 $sp-3;
+  }
+}
+
+// Shared eyebrow label
+.pre-title {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-2;
+  color: $gold;
+  font-family: $mono;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 8px;
+  margin-bottom: $sp-3;
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    width: 28px;
+    height: 1px;
+    background: $gold;
+    opacity: 0.5;
+  }
+}
+
+.header-divider {
+  width: 120px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, $gold, transparent);
+  margin: $sp-5 auto 0;
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    width: 6px;
+    height: 6px;
+    background: $gold;
+    transform: rotate(45deg);
+    box-shadow: 0 0 12px $gold;
+    animation: pulseDiamond 2.5s ease-in-out infinite;
   }
 }
 
@@ -83,107 +128,55 @@ $sp-8: 128px;
 // ================================================================
 .section-header {
   text-align: center;
-  margin-bottom: 60px;
-
-  .pre-title {
-    display: inline-flex;
-    align-items: center;
-    gap: $sp-2;
-    color: $gold;
-    font-family: $mono;
-    font-size: 0.72rem;
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 8px;
-    margin-bottom: $sp-3;
-
-    &::before,
-    &::after {
-      content: '';
-      display: block;
-      width: 28px;
-      height: 1px;
-      background: $gold;
-      opacity: 0.5;
-    }
-  }
+  margin-bottom: 50px;
 
   h2 {
     font-family: $serif;
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-size: clamp(2.2rem, 5vw, 3.4rem);
     font-weight: 400;
-    line-height: 1.15;
-    color: $text-1;
-    max-width: 720px;
-    margin: 0 auto;
+    line-height: 1.12;
     letter-spacing: -0.02em;
+    color: $text-1;
 
     .gold {
       color: $gold;
       font-style: italic;
-      text-shadow: 0 0 40px rgba($gold, 0.3);
     }
   }
 
-  .header-divider {
-    width: 120px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, $gold, transparent);
-    margin: $sp-5 auto 0;
-    position: relative;
-
-    &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      translate: -50% -50%;
-      width: 6px;
-      height: 6px;
-      background: $gold;
-      transform: rotate(45deg);
-      box-shadow: 0 0 12px $gold;
-      animation: pulseDiamond 2.5s ease-in-out infinite;
-    }
+  .section-sub {
+    color: $text-2;
+    font-size: 1rem;
+    font-weight: 300;
+    line-height: 1.7;
+    max-width: 480px;
   }
 }
 
 // ================================================================
-// HERO SECTION
+// HERO
 // ================================================================
 .hero {
-  height: 100svh;
-  min-height: 680px;
-  display: grid;
-  place-items: center;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
   position: relative;
-  text-align: center;
-  background-size: cover;
-  background-position: center;
+  overflow: hidden;
+  padding: $sp-8 0 10px;
 
-  transform: translateZ(0);
-
-  @media (min-width: 769px) {
-    background-attachment: scroll;
-  }
-
-  // Multi-layer cinematic overlay
-  &::after {
+  &::before {
     content: '';
     position: absolute;
     inset: 0;
+    background: radial-gradient(circle at 70% 30%, rgba($gold, 0.08), transparent 45%),
+      linear-gradient(105deg, rgba($dark, 0.96) 0%, rgba($dark, 0.78) 45%, rgba($dark, 0.45) 100%);
     z-index: 1;
   }
 
-  .hero-overlay {
-    display: none;
-  }
-
-  .hero-content {
+  .hero-inner {
     position: relative;
     z-index: 2;
-    max-width: 900px;
-    padding: 0 $sp-3;
+    width: 100%;
   }
 
   .hero-tag {
@@ -196,37 +189,32 @@ $sp-8: 128px;
     font-family: $mono;
     font-size: 0.72rem;
     font-weight: 500;
-    margin-bottom: $sp-3;
-    animation: heroReveal 1s $ease-out both;
+    margin-bottom: $sp-4;
+    margin-top: 40px;
+    padding: $sp-1 $sp-3 $sp-1 $sp-2;
+    border: 1px solid $border-gold;
+    border-radius: 100px;
+    background: rgba($gold, 0.04);
+    animation: reveal 1s $ease-out both;
 
-    &::before,
-    &::after {
-      content: '';
-      width: 24px;
-      height: 1px;
+    .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
       background: $gold;
-      opacity: 0.5;
+      box-shadow: 0 0 10px $gold;
+      animation: pulseDot 2s ease-in-out infinite;
     }
   }
 
   h1 {
     font-family: $serif;
-    font-size: clamp(3rem, 8.5vw, 5.5rem);
+    font-size: clamp(2.8rem, 7.5vw, 5.2rem);
     font-weight: 400;
-    line-height: 1.05;
-    letter-spacing: -0.02em;
-    margin-bottom: $sp-3;
-    animation: heroReveal 1s $ease-out 0.15s both;
-
-    .hero-sub {
-      display: block;
-      font-size: 14px;
-      text-transform: uppercase;
-      letter-spacing: 3px;
-      color: #c5a059;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
+    line-height: 1.04;
+    letter-spacing: -0.025em;
+    margin-bottom: $sp-4;
+    animation: reveal 1s $ease-out 0.12s both;
 
     .highlight {
       color: $gold;
@@ -236,119 +224,429 @@ $sp-8: 128px;
       &::after {
         content: '';
         position: absolute;
-        bottom: 4px;
+        bottom: 2px;
         left: 0;
         right: 0;
-        height: 1px;
-        background: linear-gradient(90deg, transparent, $gold, transparent);
-        opacity: 0.5;
+        height: 2px;
+        background: linear-gradient(90deg, $gold, transparent);
+        opacity: 0.7;
       }
     }
   }
 
   p {
     color: $text-2;
-    font-size: clamp(1rem, 1.5vw, 1.15rem);
-    max-width: 580px;
-    margin: 0 auto $sp-5;
+    font-size: clamp(1rem, 1.4vw, 1.15rem);
+    max-width: 520px;
+    margin-bottom: $sp-5;
     line-height: 1.8;
-    font-weight: 300;
-    letter-spacing: 0.01em;
-    animation: heroReveal 1s $ease-out 0.3s both;
+    animation: reveal 1s $ease-out 0.24s both;
   }
 
   .hero-btns {
     display: flex;
     gap: $sp-2;
-    justify-content: center;
     flex-wrap: wrap;
-    animation: heroReveal 1s $ease-out 0.45s both;
+    margin-bottom: $sp-7;
+    animation: reveal 1s $ease-out 0.36s both;
+  }
 
-    a {
-      padding: 16px 42px;
-      text-decoration: none;
-      text-transform: uppercase;
-      font-weight: 600;
-      font-size: 0.8rem;
-      letter-spacing: 3px;
-      border-radius: 2px;
-      @include smooth-transition(0.35s);
-      will-change: translate;
+  @media (max-width: 768px) {
+    min-height: 80vh;
+    text-align: center;
+
+    .hero-tag,
+    h1,
+    p,
+    .hero-btns {
+      margin-left: auto;
+      margin-right: auto;
+      margin-top: auto;
     }
 
-    .btn-primary {
-      background: $gold;
-      color: #000;
-      position: relative;
-      overflow: hidden;
-
-      &::before {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), transparent);
-        opacity: 0;
-        transition: opacity 0.3s;
-      }
-
-      &:hover {
-        background: $gold-light;
-        translate: 0 -4px;
-        box-shadow: 0 12px 32px rgba($gold, 0.35);
-
-        &::before {
-          opacity: 1;
-        }
-      }
-
-      &:active {
-        translate: 0 -1px;
-      }
-    }
-
-    .btn-secondary {
-      border: 1px solid rgba(255, 255, 255, 0.25);
-      color: $text-1;
-      @include glass-effect(0.05);
-
-      &:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.5);
-        translate: 0 -4px;
-      }
+    .hero-btns {
+      justify-content: center;
     }
   }
 }
+
+// ================================================================
+// STATS
+// ================================================================
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $sp-4;
+  padding: $sp-6 $sp-4;
+  border-top: 1px solid $border-dim;
+  border-bottom: 1px solid $border-dim;
+
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: $sp-5;
+  }
+
+
+
+  .stat-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: transform 0.3s ease;
+
+    .stat-value {
+      font-family: $serif;
+      font-size: 3.5rem;
+      font-weight: 500;
+      color: $gold;
+      line-height: 1;
+      margin-bottom: $sp-1;
+      text-shadow: 0 0 20px rgba($gold, 0.2);
+    }
+
+
+    .stat-label {
+      font-family: $mono;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      color: $text-2;
+    }
+
+
+    &:hover {
+      transform: translateY(-5px);
+
+      .stat-value {
+        color: $gold-light;
+      }
+    }
+
+  }
+}
+// ================================================================
+// FEATURED CATEGORIES / WORKS (7 ქარდიანი პრემიუმ გრიდი - 440px)
+// ================================================================
+.featured-works {
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(180deg, $dark, $surface-1);
+
+  .bg-text {
+    position: absolute;
+    top: 10%;
+    left: 50%;
+    translate: -50% 0;
+    font-family: $serif;
+    font-size: clamp(80px, 15vw, 220px);
+    font-weight: 900;
+    color: transparent;
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.035);
+    pointer-events: none;
+    user-select: none;
+    white-space: nowrap;
+    z-index: 0;
+    letter-spacing: 0.08em;
+  }
+
+  .container {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: $sp-3;
+
+  // 🎯 დესკტოპის ასიმეტრიული 7-ქარდიანი ლოგიკა (შენი 440px სიმაღლით)
+  @media (min-width: 981px) {
+    /* ქარდი 1: იკავებს 2 სვეტს სიგანეში */
+    .work-card:nth-child(1) {
+      grid-column: span 2;
+    }
+
+    /* ქარდი 6: ასევე იკავებს 2 სვეტს ქვედა რიგის ბალანსისთვის */
+    .work-card:nth-child(6) {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 980px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 580px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+// ================================================================
+// WORK CARD COMPONENT
+// ================================================================
+.work-card {
+  position: relative;
+  cursor: pointer;
+  border-radius: 10px;
+  overflow: hidden;
+  background: $surface-1;
+  border: 1px solid $border-dim;
+  transform: translateZ(0);
+  @include smooth(0.5s);
+  animation: cardFadeIn 0.6s $ease-out backwards;
+
+  /* ციკლი შევცვალე 7-ზე, რადგან ზუსტად 7 ქარდი გაქვს */
+  @for $i from 1 through 7 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{$i * 0.08}s;
+    }
+  }
+
+  .card-inner {
+    position: relative;
+    height: 440px; /* შენი ორიგინალი იდეალური სიმაღლე */
+
+    @media (max-width: 580px) {
+      height: 380px; /* მობილურზე ოდნავ კომპაქტური, რომ ეკრანი არ ჩაყლაპოს */
+    }
+  }
+
+  .card-img {
+    position: absolute;
+    inset: 0;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.62) saturate(0.85);
+      transition: transform 0.9s $ease-out, filter 0.5s ease;
+    }
+  }
+
+  .card-index {
+    position: absolute;
+    top: $sp-3;
+    left: $sp-3;
+    z-index: 3;
+    font-family: $serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: $text-1;
+    opacity: 0.85;
+    line-height: 1;
+
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background: $gold;
+      vertical-align: middle;
+      margin-right: $sp-1;
+    }
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: $sp-4;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.35) 25%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    transition: background 0.5s ease;
+  }
+
+  .card-info {
+    width: 100%;
+
+    .card-cat {
+      display: block;
+      color: $gold;
+      font-family: $mono;
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: $sp-1;
+      opacity: 0.85;
+    }
+
+    h3 {
+      font-family: $serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: $text-1;
+      margin-bottom: $sp-2;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: $sp-1;
+      color: $gold;
+      font-family: $mono;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+
+      .view-arrow {
+        transition: transform 0.4s $ease-out;
+      }
+    }
+  }
+
+  // INTERACTION
+  &:hover {
+    transform: translateY(-6px);
+    border-color: $border-gold;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
+
+    .card-img img {
+      transform: scale(1.08);
+      filter: brightness(0.82) saturate(1.1);
+    }
+
+    .card-overlay {
+      background: linear-gradient(to top,
+          rgba(0, 0, 0, 0.95) 0%,
+          rgba(0, 0, 0, 0.5) 50%,
+          rgba(0, 0, 0, 0.1) 100%);
+    }
+
+    .card-footer .view-arrow {
+      transform: translateX(5px);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid $gold;
+    outline-offset: 4px;
+  }
+}
+
+// ================================================================
+// BUTTONS (shared)
+// ================================================================
+.btn-primary,
+.btn-secondary,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-1;
+  padding: 16px 36px;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 2.5px;
+  border-radius: 3px;
+  cursor: pointer;
+  @include smooth(0.35s);
+
+  .arrow {
+    transition: transform 0.35s $ease-out;
+  }
+
+  &:hover .arrow {
+    transform: translateX(5px);
+  }
+}
+
+.btn-primary {
+  background: $gold;
+  color: #0a0a0b;
+  border: 1px solid $gold;
+
+  &:hover {
+    background: $gold-light;
+    border-color: $gold-light;
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba($gold, 0.32);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+  }
+
+  &.large {
+    padding: 20px 52px;
+    font-size: 0.82rem;
+    letter-spacing: 3px;
+  }
+}
+
+.btn-secondary {
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: $text-1;
+  background: rgba(255, 255, 255, 0.03);
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.45);
+    transform: translateY(-3px);
+  }
+}
+
+.btn-text {
+  display: inline-flex;
+  align-items: center;
+  gap: $sp-1;
+  color: $gold;
+  font-family: $mono;
+  font-size: 0.78rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none;
+  margin-top: $sp-3;
+
+  .arrow {
+    transition: transform 0.35s $ease-out;
+  }
+
+  &:hover .arrow {
+    transform: translateX(5px);
+  }
+}
+
 // ================================================================
 // SCROLL INDICATOR
 // ================================================================
 .scroll-indicator {
   position: absolute;
-  top: 88%;
-  bottom: 0px;
-  left: 50%;
-  translate: -50% 0;
+  bottom: $sp-4;
+  right: $sp-5;
   z-index: 2;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: $sp-1;
-  opacity: 0.5;
+  gap: $sp-2;
+  opacity: 0.6;
   animation: fadeIn 1s 1s ease both;
 
- 
   span {
     font-family: $mono;
-    font-size: 0.7rem;
-    letter-spacing: 4px;
+    font-size: 0.6rem;
+    letter-spacing: 3px;
     text-transform: uppercase;
     color: $text-2;
-    margin-bottom: 5px;
+    writing-mode: vertical-rl;
   }
 
   .mouse {
-    width: 24px;
-    height: 40px;
+    width: 22px;
+    height: 36px;
     border: 1px solid rgba(255, 255, 255, 0.4);
     border-radius: 12px;
     position: relative;
@@ -360,11 +658,15 @@ $sp-8: 128px;
       left: 50%;
       translate: -50% 0;
       width: 3px;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.8);
+      height: 7px;
+      background: $gold;
       border-radius: 2px;
       animation: mouseScroll 2s infinite $ease-in-out;
     }
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 }
 
@@ -372,25 +674,25 @@ $sp-8: 128px;
 // FEATURED WORKS
 // ================================================================
 .featured-works {
-  padding: 50px 0;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(180deg, $dark, $surface-1);
 
   .bg-text {
     position: absolute;
-    top: 50%;
+    top: 10%;
     left: 50%;
-    translate: -50% -50%;
+    translate: -50% 0;
     font-family: $serif;
-    font-size: clamp(80px, 14vw, 200px);
+    font-size: clamp(80px, 15vw, 220px);
     font-weight: 900;
     color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.04);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.035);
     pointer-events: none;
     user-select: none;
     white-space: nowrap;
     z-index: 0;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.08em;
   }
 
   .container {
@@ -399,222 +701,158 @@ $sp-8: 128px;
   }
 }
 
-// ================================================================
-// WORKS GRID
-// ================================================================
 .works-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: $sp-3;
 
-  @media (max-width: 1100px) {
+  @media (max-width: 980px) {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 580px) {
     grid-template-columns: 1fr;
+  }
+}
+
+// First card spans wide on large screens for rhythm
+@media (min-width: 981px) {
+  .work-card:nth-child(1) {
+    grid-column: span 2;
   }
 }
 
 .work-card {
   position: relative;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 10px;
   overflow: hidden;
   background: $surface-1;
   border: 1px solid $border-dim;
-  will-change: transform; // მხოლოდ transform-ზე მიუთითე
   transform: translateZ(0);
-  backface-visibility: hidden;
-  @include smooth-transition(0.5s);
-
-  // Animated gradient border
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 8px;
-    padding: 1px;
-    background: linear-gradient(135deg,
-        rgba($gold, 0) 0%,
-        rgba($gold, 0.4) 50%,
-        rgba($gold, 0) 100%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.5s;
-    pointer-events: none;
-    z-index: 5;
-  }
-
-  // Stagger animation on load
+  @include smooth(0.5s);
   animation: cardFadeIn 0.6s $ease-out backwards;
 
   @for $i from 1 through 8 {
     &:nth-child(#{$i}) {
-      animation-delay: #{$i * 0.1}s;
+      animation-delay: #{$i * 0.08}s;
     }
   }
 
   .card-inner {
     position: relative;
-    height: 480px;
+    height: 440px;
+  }
 
-    .card-img {
-      position: absolute;
-      inset: 0;
+  .card-img {
+    position: absolute;
+    inset: 0;
 
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        image-rendering: -webkit-optimize-contrast;
-        /* უკეთესი რენდერისთვის */
-        filter: brightness(0.65) saturate(0.85);
-        transition: transform 0.8s $ease-out, filter 0.5s ease;
-        will-change: transform;
-      }
-
-      .card-badge {
-        position: absolute;
-        top: $sp-2;
-        right: $sp-2;
-        background: rgba(0, 0, 0, 0.6);
-        color: rgba(255, 255, 255, 0.7);
-        font-family: $mono;
-        font-size: 0.78rem;
-        padding: 4px 12px;
-        border-radius: 4px;
-        @include glass-effect(0.1);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        z-index: 3;
-        @include smooth-transition(0.3s);
-      }
-    }
-
-    .card-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: flex-end;
-      padding: $sp-4;
-      background: linear-gradient(to top,
-          rgba(0, 0, 0, 0.95) 0%,
-          rgba(0, 0, 0, 0.5) 20%,
-          rgba(0, 0, 0, 0.1) 100%);
-      transition: background 0.5s ease;
-    }
-
-    .card-info {
+    img {
       width: 100%;
-      translate: 0 8px;
-      transition: translate 0.5s $ease-out;
+      height: 100%;
+      object-fit: cover;
+      filter: brightness(0.62) saturate(0.85);
+      transition: transform 0.9s $ease-out, filter 0.5s ease;
+    }
+  }
 
-      .card-cat {
-        display: block;
-        color: $gold;
-        font-family: $mono;
-        font-size: 0.7rem;
-        text-transform: uppercase;
-        letter-spacing: 4px;
-        margin-bottom: $sp-1;
-        opacity: 0.85;
-      }
+  .card-index {
+    position: absolute;
+    top: $sp-3;
+    left: $sp-3;
+    z-index: 3;
+    font-family: $serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: $text-1;
+    opacity: 0.85;
+    line-height: 1;
 
-      h3 {
-        font-family: $serif;
-        font-size: 1.45rem;
-        font-weight: 400;
-        letter-spacing: 0.01em;
-        margin-bottom: $sp-1 + 4px;
-        color: $text-1;
-      }
+    &::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background: $gold;
+      vertical-align: middle;
+      margin-right: $sp-1;
+    }
+  }
 
-      p {
-        color: $text-2;
-        font-size: 0.88rem;
-        line-height: 1.55;
-        margin-bottom: $sp-2;
-        opacity: 0;
-        transition: opacity 0.4s ease 0.05s;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-      }
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: flex-end;
+    padding: $sp-4;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.92) 0%,
+      rgba(0, 0, 0, 0.35) 25%,
+      rgba(0, 0, 0, 0) 100%
+    );
+    transition: background 0.5s ease;
+  }
 
-      .card-footer {
-        display: flex;
-        align-items: center;
-        gap: $sp-2;
+  .card-info {
+    width: 100%;
 
-        .view-link {
-          font-family: $mono;
-          font-size: 0.75rem;
-          font-weight: 500;
-          text-transform: uppercase;
-          letter-spacing: 2px;
-          color: $gold;
-          white-space: nowrap;
-        }
+    .card-cat {
+      display: block;
+      color: $gold;
+      font-family: $mono;
+      font-size: 0.66rem;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      margin-bottom: $sp-1;
+      opacity: 0.85;
+    }
 
-        .line {
-          flex: 1;
-          height: 1px;
-          background: $gold;
-          transform: scaleX(0);
-          transform-origin: left;
-          transition: transform 0.6s $ease-out;
-        }
+    h3 {
+      font-family: $serif;
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: $text-1;
+      margin-bottom: $sp-2;
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      gap: $sp-1;
+      color: $gold;
+      font-family: $mono;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+
+      .view-arrow {
+        transition: transform 0.4s $ease-out;
       }
     }
   }
 
-  // Hover state
   &:hover {
-    transform: translateY(-8px) scale(1.01);
-    box-shadow:
-      0 24px 48px rgba(0, 0, 0, 0.6),
-      0 0 0 1px $border-gold;
+    transform: translateY(-6px);
     border-color: $border-gold;
+    box-shadow: 0 24px 50px rgba(0, 0, 0, 0.55);
 
-    &::before {
-      opacity: 1;
-    }
-
-    .card-img {
-      img {
-        transform: scale(1.1);
-        filter: brightness(0.85) saturate(1.15);
-      }
-
-      .card-badge {
-        background: rgba($gold, 0.2);
-        color: $gold;
-        border-color: rgba($gold, 0.4);
-      }
+    .card-img img {
+      transform: scale(1.08);
+      filter: brightness(0.82) saturate(1.1);
     }
 
     .card-overlay {
       background: linear-gradient(to top,
-          rgba(0, 0, 0, 0.98) 0%,
-          rgba(0, 0, 0, 0.6) 50%,
-          rgba(0, 0, 0, 0.2) 100%);
+          rgba(0, 0, 0, 0.95) 0%,
+          rgba(0, 0, 0, 0.5) 50%,
+          rgba(0, 0, 0, 0.1) 100%);
     }
 
-    .card-info {
-      translate: 0 0;
-
-      p {
-        opacity: 1;
-      }
-
-      .line {
-        transform: scaleX(1);
-      }
+    .card-footer .view-arrow {
+      transform: translateX(5px);
     }
   }
 
@@ -626,171 +864,178 @@ $sp-8: 128px;
 
 .footer-action {
   text-align: center;
-  margin-top: $sp-7;
+  margin-top: $sp-6;
 
   .btn-outline {
-    display: inline-block;
-    padding: 16px 52px;
-    border: 1px solid $border-gold;
-    color: $text-1;
+    display: inline-flex;
+    align-items: center;
+    gap: $sp-2;
+    padding: 16px 40px;
     text-decoration: none;
     text-transform: uppercase;
     font-weight: 600;
     font-size: 0.8rem;
-    letter-spacing: 3px;
-    border-radius: 2px;
-    position: relative;
-    overflow: hidden;
-    @include smooth-transition(0.4s);
-    will-change: translate;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: $gold;
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.4s $ease-out;
-      z-index: -1;
-    }
+    letter-spacing: 2px;
+    color: $text-1;
+    background: transparent;
+    border: 1px solid rgba($text-1, 0.2);
+    border-radius: 3px;
+    cursor: pointer;
+    @include smooth(0.35s);
 
     &:hover {
-      color: #000;
+      color: $dark;
+      background: $gold;
       border-color: $gold;
-      translate: 0 -3px;
-      box-shadow: 0 12px 28px rgba($gold, 0.25);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 20px rgba($gold, 0.2);
+    }
 
-      &::before {
-        transform: scaleX(1);
-      }
+    &:active {
+      transform: translateY(-1px);
     }
   }
 }
-
 // ================================================================
-// WHY US
+// WHY US — RESPONSIVE & OPTIMIZED
 // ================================================================
 .why-us {
-  padding: 80px 0;
+  padding: $sp-8 0;
+  background: $surface-1;
   position: relative;
+  overflow: hidden;
 
   &::before {
     content: '';
-    display: block;
     position: absolute;
     top: 0;
-    left: 50%;
-    translate: -50% 0;
-    width: min(600px, 80%);
+    left: 0;
+    right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, $border-gold, transparent);
+    background: linear-gradient(90deg, transparent, rgba($gold, 0.35), transparent);
   }
-}
+} 
 
-.why-grid {
+.why-layout {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: $sp-3;
-  margin-top: 65px;
+  grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+  gap: clamp(#{$sp-4}, 5vw, #{$sp-6});
+  align-items: start;
 
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
+  @media (max-width: 1200px) {
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
   }
 
-  @media (max-width: 600px) {
+  @media (max-width: 992px) {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 }
 
-.why-card {
-  position: relative;
-  background: $surface-1;
-  padding: $sp-5 $sp-4;
-  border-radius: 6px;
-  border: 1px solid $border-dim;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  will-change: transform, box-shadow;
-  @include smooth-transition(0.5s);
+.why-intro {
+  min-width: 0;
 
-  // Stagger animation
-  animation: cardFadeIn 0.6s $ease-out backwards;
-
-  @for $i from 1 through 4 {
-    &:nth-child(#{$i}) {
-      animation-delay: #{0.3 + ($i * 0.1)}s;
-    }
-  }
-
-  .bg-number {
-    position: absolute;
-    top: -$sp-2;
-    right: -$sp-1;
+  h2 {
+    margin: $sp-3 0 $sp-5;
     font-family: $serif;
-    font-size: 7rem;
-    font-weight: 700;
-    line-height: 1;
-    color: transparent;
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.03);
-    pointer-events: none;
-    user-select: none;
-    transition: all 0.5s $ease-out;
-    z-index: 0;
-  }
-
-  .card-line {
-    width: 28px;
-    height: 2px;
-    background: rgba($gold, 0.35);
-    margin-bottom: $sp-4;
-    border-radius: 1px;
-    transition: width 0.5s $ease-out, background-color 0.4s ease;
-    position: relative;
-    z-index: 1;
-  }
-
-  h3 {
-    font-family: $serif;
-    font-size: 1.3rem;
+    font-size: clamp(2.4rem, 4.5vw, 3.5rem);
+    line-height: 1.05;
     font-weight: 400;
-    color: $text-1;
-    margin-bottom: $sp-2;
-    letter-spacing: 0.01em;
-    position: relative;
-    z-index: 1;
+    letter-spacing: -0.04em;
+
+    .gold {
+      color: $gold;
+      font-style: italic;
+    }
   }
 
   p {
-    color: $text-3;
-    font-size: 0.9rem;
-    line-height: 1.75;
+    max-width: 440px;
+    color: $text-2;
+    line-height: 1.85;
     font-weight: 300;
-    position: relative;
-    z-index: 1;
-    transition: color 0.4s ease;
+    font-size: clamp(0.98rem, 2.5vw, 1.05rem);
   }
 
-  &:hover {
-    transform: translateY(-6px);
-    background: $surface-2;
-    border-color: rgba($gold, 0.2);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-    @include gold-glow(0.08);
-
-    .card-line {
-      width: 56px;
-      background: $gold;
+  @media (max-width: 992px) {
+    p {
+      max-width: none;
     }
 
-    .bg-number {
-      -webkit-text-stroke-color: rgba($gold, 0.08);
-      transform: scale(1.04) translateY(-4px);
+    .btn-text {
+      margin-bottom: $sp-5;
+    }
+  }
+}
+
+.why-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0;
+  min-width: 0;
+
+  @media (max-width: 992px) {
+    padding-top: $sp-5;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+  }
+}
+
+.why-item {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  gap: clamp(#{$sp-3}, 4vw, #{$sp-5});
+  padding: clamp(1.5rem, 4vw, 2.25rem) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:first-child { padding-top: 0; }
+  &:last-child { border-bottom: none; padding-bottom: 0; }
+
+  .num {
+    color: $gold;
+    font-family: $mono;
+    font-size: clamp(1.15rem, 2.5vw, 1.35rem);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    opacity: 0.45;
+    transition: all 0.4s ease;
+  }
+
+  .why-body {
+    min-width: 0;
+
+    h3 {
+      margin-bottom: 0.75rem;
+      font-family: $serif;
+      font-size: clamp(1.25rem, 2.2vw, 1.55rem);
+      font-weight: 400;
+      transition: color 0.35s ease;
     }
 
     p {
-      color: $text-2;
+      color: $text-3;
+      line-height: 1.8;
+      font-weight: 300;
+      transition: color 0.35s ease;
+    }
+  }
+
+  @media (max-width: 480px) {
+    grid-template-columns: 40px minmax(0, 1fr);
+    gap: $sp-3;
+  }
+
+  // Hover ეფექტი მხოლოდ დესკტოპზე
+  @media (min-width: 993px) {
+    will-change: transform;
+
+    &:hover {
+      transform: translateX(12px);
+      .num { opacity: 1; transform: scale(1.08); }
+      .why-body {
+        h3 { color: $gold; }
+        p { color: $text-2; }
+      }
     }
   }
 }
@@ -799,20 +1044,19 @@ $sp-8: 128px;
 // FINAL CTA
 // ================================================================
 .final-cta {
-  padding: $sp-8 0;
+  padding: 80px 0;
   text-align: center;
   position: relative;
   overflow: hidden;
+  background: linear-gradient(180deg, $surface-1, $dark);
 
-  // Ambient glow
-  &::before {
-    content: '';
+  .cta-glow {
     position: absolute;
-    bottom: -120px;
+    bottom: -160px;
     left: 50%;
     translate: -50% 0;
-    width: 600px;
-    height: 300px;
+    width: 640px;
+    height: 320px;
     background: radial-gradient(ellipse at center, $gold-glow, transparent 70%);
     pointer-events: none;
     animation: glowPulse 4s ease-in-out infinite;
@@ -821,67 +1065,34 @@ $sp-8: 128px;
   .container {
     position: relative;
     z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: $sp-4;
   }
 
   h2 {
     font-family: $serif;
-    font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+    font-size: clamp(2rem, 4vw, 3rem);
     font-weight: 400;
     letter-spacing: -0.02em;
     color: $text-1;
-    max-width: 700px;
-    margin: 0 auto $sp-5;
+    max-width: 640px;
     line-height: 1.2;
   }
 
   .btn-primary.large {
-    display: inline-block;
-    background: $gold;
-    color: #000;
-    padding: 20px 56px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 3px;
-    border-radius: 2px;
-    text-decoration: none;
-    position: relative;
-    overflow: hidden;
-    @include smooth-transition(0.4s);
-    will-change: translate;
-
-    &::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, rgba(255, 255, 255, 0.25), transparent 50%);
-      opacity: 0;
-      transition: opacity 0.3s;
-    }
-
-    &:hover {
-      background: $gold-light;
-      translate: 0 -5px;
-      box-shadow: 0 16px 40px rgba($gold, 0.35);
-
-      &::before {
-        opacity: 1;
-      }
-    }
-
-    &:active {
-      translate: 0 -2px;
-    }
+    margin-top: $sp-2;
   }
 }
 
 // ================================================================
 // ANIMATIONS
 // ================================================================
-@keyframes heroReveal {
+@keyframes reveal {
   from {
     opacity: 0;
-    translate: 0 30px;
+    translate: 0 28px;
   }
 
   to {
@@ -896,7 +1107,21 @@ $sp-8: 128px;
   }
 
   to {
-    opacity: 0.5;
+    opacity: 0.6;
+  }
+}
+
+@keyframes pulseDot {
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.4);
+    opacity: 0.6;
   }
 }
 
@@ -907,12 +1132,12 @@ $sp-8: 128px;
   }
 
   70% {
-    translate: -50% 14px;
+    translate: -50% 13px;
     opacity: 0.2;
   }
 
   100% {
-    translate: -50% 14px;
+    translate: -50% 13px;
     opacity: 0;
   }
 }
@@ -920,26 +1145,12 @@ $sp-8: 128px;
 @keyframes cardFadeIn {
   from {
     opacity: 0;
-    transform: translateY(40px);
+    transform: translateY(36px);
   }
 
   to {
     opacity: 1;
     transform: translateY(0);
-  }
-}
-
-@keyframes pulseDiamond {
-
-  0%,
-  100% {
-    transform: rotate(45deg) scale(1);
-    opacity: 1;
-  }
-
-  50% {
-    transform: rotate(45deg) scale(1.15);
-    opacity: 0.7;
   }
 }
 
@@ -961,28 +1172,27 @@ $sp-8: 128px;
 // RESPONSIVE
 // ================================================================
 @media (max-width: 768px) {
-  .work-card .card-inner {
-    height: 420px;
-  }
-
   .hero {
-    h1 {
-      letter-spacing: -0.01em;
-    }
-
-    .hero-btns a {
-      padding: 14px 32px;
-    }
+    min-height: 680px;
+    display: grid;
+    place-items: center;
+    position: relative;
+    text-align: center;
+    background-size: cover;
+    background-position: center;
+    transform: translateZ(0);
   }
 
-  .section-header {
-    margin-bottom: $sp-5;
+  .work-card .card-inner {
+    height: 380px;
   }
 
-  .featured-works,
-  .why-us,
-  .final-cta {
-    padding: $sp-6 0;
+  .why-us {
+    padding: 0;
+
+    .pre-title {
+      margin-top: 40px;
+    }
   }
 }
 
@@ -992,17 +1202,13 @@ $sp-8: 128px;
     align-items: stretch;
 
     a {
-      text-align: center;
+      justify-content: center;
     }
-  }
-
-  .why-card {
-    padding: $sp-4 $sp-3;
   }
 }
 
 // ================================================================
-// REDUCED MOTION - Accessibility
+// REDUCED MOTION
 // ================================================================
 @media (prefers-reduced-motion: reduce) {
 
@@ -1016,18 +1222,14 @@ $sp-8: 128px;
   .hero h1,
   .hero p,
   .hero .hero-tag,
-  .hero .hero-btns {
+  .hero .hero-btns,
+  .hero .hero-stats {
     animation: none;
     opacity: 1;
   }
 
-  .scroll-indicator {
-    animation: none;
-    opacity: 0.5;
-  }
-
   .work-card,
-  .why-card {
+  .why-item {
     animation: none;
     opacity: 1;
     transform: none;

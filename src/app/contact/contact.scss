@@ -1,14 +1,29 @@
+// ===== VARIABLES (შესაბამისობაშია ახალ გრაფიტისფერ დიზაინთან) =====
 $gold: #c5a059;
+$gold-light: #d4b06a;
+$gold-dark: #a88942;
+
+/* 🎯 ახალი, განათებული ფონების ცვლადები */
+$bg-contact: #1e1e22;      // მთავარი ფონი
+$surface-card: #26262b;    // რუკის ბეგრაუნდი და სოციალური წრეები
+
+/* ტექსტების გაცოცხლება */
+$text-light: #ffffff;
+$text-muted: rgba(255, 255, 255, 0.7);  // ძველი მკვდარი ფერების ნაცვლად
+$text-dim: rgba(255, 255, 255, 0.45);
+
 $serif: 'Playfair Display', serif;
 $mono: 'JetBrains Mono', monospace;
 $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
 .contact-page {
-  color: #fff;
+  color: $text-light;
   padding: 160px 0 100px;
   min-height: 85vh;
   position: relative;
   overflow: hidden;
+  /* 🎯 გვერდის ფონი გავხადეთ უფრო ღია */
+  background-color: $bg-contact; 
 
   .container {
     max-width: 1300px;
@@ -63,7 +78,8 @@ $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         display: block;
         font-family: $mono;
         font-size: 0.65rem;
-        color: rgba(255, 255, 255, 0.3);
+        /* 🎯 ტექსტის ფერი უფრო იკითხებადი გავხადეთ */
+        color: $text-dim; 
         text-transform: uppercase;
         letter-spacing: 2px;
         margin-bottom: 10px;
@@ -71,7 +87,7 @@ $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
       .method-value {
         font-size: 1.3rem;
-        color: #fff;
+        color: $text-light;
         text-decoration: none;
         font-weight: 300;
         line-height: 1.5;
@@ -85,7 +101,7 @@ $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           width: fit-content;
 
           &:hover {
-            color: #fff;
+            color: $text-light;
             text-shadow: 0 0 15px rgba($gold, 0.4);
           }
         }
@@ -104,7 +120,7 @@ $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 
     p {
       font-size: 0.9rem;
-      color: rgba(255, 255, 255, 0.4);
+      color: $text-muted; /* 🎯 მეტი კონტრასტი საინფორმაციო ტექსტს */
       margin-bottom: 30px;
       font-weight: 300;
     }
@@ -116,18 +132,19 @@ $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       .social-circle {
         width: 45px;
         height: 45px;
-        border: 1px solid rgba($gold, 0.3);
+        border: 1px solid rgba($gold, 0.35);
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
         transition: $transition;
-        background: rgba(255, 255, 255, 0.02);
+        /* 🎯 წრის ფონი ჩავანაცვლეთ რბილი ზედაპირით */
+        background: $surface-card; 
 
         svg {
           width: 20px;
           height: 20px;
-          fill: rgba(255, 255, 255, 0.6);
+          fill: rgba(255, 255, 255, 0.75);
           transition: $transition;
         }
 
@@ -135,7 +152,7 @@ $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           background: $gold;
           border-color: $gold;
           transform: translateY(-5px);
-          box-shadow: 0 10px 20px rgba($gold, 0.2);
+          box-shadow: 0 10px 20px rgba($gold, 0.25);
 
           svg {
             fill: #000;
@@ -151,8 +168,9 @@ $transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
   .map-frame {
     position: relative;
     padding: 12px;
-    border: 1px solid rgba($gold, 0.2);
-    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba($gold, 0.25);
+    /* 🎯 რუკის ჩარჩოს ბეგრაუნდი გავხადეთ უფრო გამოკვეთილი */
+    background: $surface-card; 
 
     iframe {
       width: 100%;

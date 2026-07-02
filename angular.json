@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "rkinis-naketoba": {
+    "rkinis-dizaini": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -67,10 +67,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "rkinis-naketoba:build:production"
+              "buildTarget": "rkinis-dizaini:build:production"
             },
             "development": {
-              "buildTarget": "rkinis-naketoba:build:development"
+              "buildTarget": "rkinis-dizaini:build:development"
             }
           },
           "defaultConfiguration": "development"

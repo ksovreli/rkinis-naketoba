@@ -1,5 +1,5 @@
 {
-  "name": "rkinis-naketoba",
+  "name": "rkinis-dizaini",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:rkinis-naketoba": "node dist/rkinis-naketoba/server/server.mjs"
+    "serve:ssr:rkinis-naketoba": "node dist/rkinis-dizaini/server/server.mjs"
   },
   "prettier": {
     "printWidth": 100,
@@ -32,6 +32,8 @@
     "@angular/platform-server": "^21.1.0",
     "@angular/router": "^21.1.0",
     "@angular/ssr": "^21.1.3",
+    "@sanity/client": "^7.22.1",
+    "@sanity/image-url": "^2.1.1",
     "express": "^5.1.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0"
@@ -40,6 +42,7 @@
     "@angular/build": "^21.1.3",
     "@angular/cli": "^21.1.3",
     "@angular/compiler-cli": "^21.1.0",
+    "@netlify/angular-runtime": "^4.0.0",
     "@types/express": "^5.0.1",
     "@types/node": "^20.17.19",
     "jsdom": "^27.1.0",

@@ -1,122 +1,175 @@
 <main class="home-page">
 
   <section class="hero">
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-      <div class="hero-tag">რკინის ნაკეთობების დამზადება თბილისში</div>
-
-      <h1>
-        შენი <span class="highlight">იდეა</span><br>
-        ჩვენი შესრულება
-      </h1>
-
-      <p>
-        უნიკალური რკინის ნაკეთობები, რომლებიც სილამაზესა და სიძლიერეს ანიჭებენ თქვენს სივრცეს.
-      </p>
-      <div class="hero-btns">
-        <a routerLink="/chveni-namushevrebi" class="btn-primary">ნამუშევრების ნახვა</a>
-        <a routerLink="/kontakti" class="btn-secondary">დაგვიკავშირდით</a>
-      </div>
+    <div class="hero-grid-lines" aria-hidden="true">
+      <span></span><span></span><span></span><span></span>
     </div>
 
-    <div class="scroll-indicator">
-      <span class="exp-text">20 წლიანი გამოცდილებით</span>
-      <div class="mouse"></div>
+    <div class="hero-inner container">
+      <div class="hero-text">
+        <div class="hero-tag">
+          <span class="dot"></span>
+          რკინის კარები, ჭიშკრები და ნაკეთობები შეკვეთით — თბილისი
+        </div>
+
+        <h1>
+          შენი <span class="highlight">იდეა</span><br>
+          ჩვენი შესრულება.
+        </h1>
+
+        <p>
+          უმაღლესი ხარისხის რკინის კარები, ჭიშკრები, მოაჯირები, კიბეები, გისოსები და მაყალები ინდივიდუალური დიზაინითა და
+          20 წლიანი გარანტიით.
+        </p>
+
+        <div class="hero-btns">
+          <a routerLink="/chveni-namushevrebi/" class="btn-primary">
+            ნამუშევრების ნახვა
+            <span class="arrow">&#8594;</span>
+          </a>
+          <a routerLink="/kontakti/" class="btn-secondary">კონტაქტი</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="stats-container">
+    <div class="stat-card">
+      <span class="stat-value">20+</span>
+      <span class="stat-label">წლიანი გამოცდილება</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">600+</span>
+      <span class="stat-label">დასრულებული პროექტი</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-value">100%</span>
+      <span class="stat-label">ინდივიდუალური დიზაინი</span>
     </div>
   </section>
 
   <section class="featured-works">
-    <div class="bg-text">IRONWORK</div>
-
     <div class="container">
       <header class="section-header">
         <span class="pre-title">ექსკლუზიური კოლექცია</span>
-        <h2>გამორჩეული <span class="gold">ნამუშევრები</span></h2>
+        <h2>რკინის <span class="gold">ნაკეთობების გალერეა</span></h2>
         <div class="header-divider"></div>
       </header>
 
       <div class="works-grid">
-        @for (card of categoryCards(); track card.name; let i = $index) {
+  @for (card of categoryCards(); track card.name; let i = $index) {
 
-        @let slug = card.name === 'კარი' ? 'kari' : card.name === 'ჭიშკარი' ? 'chishkari' : card.name === 'მოაჯირი' ?
-        'moajiri' : 'gisosi';
+    @let slug = card.name === 'კარი' ? 'kari'
+              : card.name === 'ჭიშკარი' ? 'chishkari'
+              : card.name === 'აივნის მოაჯირი' ? 'aivnis-moajiri'
+              : card.name === 'კიბის მოაჯირი' ? 'kibis-moajiri'
+              : card.name === 'კიბე' ? 'kibe'
+              : card.name === 'გისოსი' ? 'gisosi'
+              : 'mayali';
 
-        <a [routerLink]="['/chveni-namushevrebi', slug]" class="work-card"
-          [attr.aria-label]="card.name + ' - დეტალურად'">
-          <div class="card-inner">
-            <div class="card-img">
-              <img [ngSrc]="card.image || ''" [alt]="'რკინის ' + card.name + ' დამზადება თბილისში - საუკეთესო დიზაინი'"
-                fill [priority]="i < 2">
-              <div class="card-badge">#0{{ i + 1 }}</div>
-            </div>
-            <div class="card-overlay">
-              <div class="card-info">
-                <span class="card-cat">{{ card.name }}</span>
-                <h3>{{ card.name }}</h3>
+    @let seoName = card.name === 'კარი' ? 'რკინის კარი'
+                 : card.name === 'ჭიშკარი' ? 'რკინის ჭიშკარი'
+                 : card.name === 'აივნის მოაჯირი' ? 'რკინის აივნის მოაჯირი'
+                 : card.name === 'კიბის მოაჯირი' ? 'რკინის კიბის მოაჯირი'
+                 : card.name === 'კიბე' ? 'რკინის კიბე'
+                 : card.name === 'გისოსი' ? 'რკინის გისოსი'
+                 : 'რკინის მაყალი';
 
-                <div class="card-footer">
-                  <span class="view-link">დათვალიერება →</span>
-                  <div class="line"></div>
-                </div>
-              </div>
+    <a [routerLink]="'/chveni-namushevrebi/' + slug + '/'" class="work-card"
+      [attr.aria-label]="seoName + ' — დეტალების ნახვა'">
+      <div class="card-inner">
+        <div class="card-img">
+          <img [ngSrc]="card.image || ''"
+            [alt]="seoName + ' დამზადებული თბილისში'"
+            fill [priority]="i < 2">
+        </div>
+
+        <span class="card-index">{{ i + 1 < 10 ? '0' : '' }}{{ i + 1 }}</span>
+
+        <div class="card-overlay">
+          <div class="card-info">
+            <span class="card-cat">კატეგორია</span>
+            
+            <h3>{{ seoName }}</h3>
+            
+            <div class="card-footer">
+              <span class="view-link">დათვალიერება</span>
+              <span class="view-arrow">&#8594;</span>
             </div>
           </div>
-        </a>
-
-        }
+        </div>
       </div>
+    </a>
+  }
+</div>
 
       <div class="footer-action">
-        <a routerLink="/chveni-namushevrebi" class="btn-outline">ყველა ნამუშევარი</a>
+        <a routerLink="/chveni-namushevrebi/" class="btn-outline">ყველა პროექტი</a>
       </div>
     </div>
   </section>
 
   <section class="why-us">
     <div class="container">
-      <div class="section-header">
-        <span class="pre-title">რატომ ჩვენ</span>
-        <h2>რატომ უნდა აირჩიოთ ჩვენი <span class="gold">რკინის ნაკეთობები</span></h2>
-        <div class="header-divider"></div>
-      </div>
+      <div class="why-layout">
+        <header class="why-intro">
+          <span class="pre-title">რატომ ჩვენ</span>
+          <h2>რატომ უნდა აგვირჩიოთ<br><span class="gold">ჩვენ</span></h2>
+          <p>
+            პირველი იდეიდან ბოლო ნაკერამდე, პროცესის თითოეულ დეტალს თავად ვაკონტროლებთ —
+            ჩვენი რკინის კარები და ჭიშკრები იქმნება თაობებისთვის შესანახად.
+          </p>
+          <a routerLink="/kontakti/" class="btn-text">
+            პროექტის დაწყება <span class="arrow">&#8594;</span>
+          </a>
+        </header>
 
-      <div class="why-grid">
-        <div class="why-card">
-          <span class="bg-number">01</span>
-          <div class="card-line"></div>
-          <h3>ინდივიდუალური დიზაინი</h3>
-          <p>თითოეული ნამუშევარი თქვენი იდეიდან იწყება და ჩვენი ხელით ცოცხლდება.</p>
-        </div>
+        <div class="why-list">
+          <div class="why-item">
+            <span class="num">01</span>
+            <div class="why-body">
+              <h3>ინდივიდუალური მიდგომა</h3>
+              <p>ყველა ნაკეთობა (იქნება ეს რკინის კარი, ჭიშკარი თუ მოაჯირი) იწყება თქვენი იდეით.</p>
+            </div>
+          </div>
 
-        <div class="why-card">
-          <span class="bg-number">02</span>
-          <div class="card-line"></div>
-          <h3>პრემიუმ ხარისხის მასალები</h3>
-          <p>მხოლოდ მაღალი ხარისხის რკინის მასალები და დეტალებზე მაქსიმალური ყურადღება.</p>
-        </div>
+          <div class="why-item">
+            <span class="num">02</span>
+            <div class="why-body">
+              <h3>პრემიუმ მასალები</h3>
+              <p>მხოლოდ უმაღლესი ხარისხის რკინა და უკომპრომისო ყურადღება დეტალების მიმართ.</p>
+            </div>
+          </div>
 
-        <div class="why-card">
-          <span class="bg-number">03</span>
-          <div class="card-line"></div>
-          <h3>გარანტია</h3>
-          <p>ჩვენი ნამუშევრები თაობებს ემსახურება.</p>
-        </div>
+          <div class="why-item">
+            <span class="num">03</span>
+            <div class="why-body">
+              <h3>საუკუნოვანი გამძლეობა</h3>
+              <p>ჩვენი ნამუშევრები მყარია და შექმნილია მრავალი თაობის მსახურებისთვის.</p>
+            </div>
+          </div>
 
-        <div class="why-card">
-          <span class="bg-number">04</span>
-          <div class="card-line"></div>
-          <h3>სრული სერვისი</h3>
-          <p>დიზაინი • წარმოება • მონტაჟი</p>
+          <div class="why-item">
+            <span class="num">04</span>
+            <div class="why-body">
+              <h3>სრული სერვისი</h3>
+              <p>დიზაინი, დამზადება და მონტაჟი — ჩვენ ვზრუნავთ ყველაფერზე თავიდან ბოლომდე.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <section class="final-cta">
+    <div class="cta-glow" aria-hidden="true"></div>
     <div class="container">
-      <h2>მზად ხართ თქვენი იდეის განსახორციელებლად?</h2>
-      <a routerLink="/kontakti" class="btn-primary large">დაგვიკავშირდით დღეს</a>
+      <span class="pre-title">დავიწყოთ</span>
+      <h2>მზად ხართ თქვენი იდეის გასაცოცხლებლად?</h2>
+      <a routerLink="/kontakti/" class="btn-primary large">
+        დაგვიკავშირდით დღესვე
+        <span class="arrow">&#8594;</span>
+      </a>
     </div>
   </section>
 

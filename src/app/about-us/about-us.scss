@@ -1,17 +1,27 @@
 // ─── VARIABLES ──────────────────────────────────────────────────
-$gold: #c5a059;
-$dark: #080808;
+$gold: #c9a45c;
+$gold-soft: #d8bd86;
+
+/* 🎯 ახალი, განათებული გრაფიტისფერი სისტემა */
+$dark: #1e1e22;          // #080808-ის ნაცვლად (ახალი ძირითადი ფონი)
+$bg-gradient-top: #28282e; // გრადიენტის უფრო ღია, ზედა წერტილი
+$surface-card: #26262b;    // სტატისტიკის ბლოკების ახალი ფონი
+$surface-hover: #2f2f35;   // ჰოვერის ფონი სტატისტიკისთვის
+
 $serif: 'Playfair Display', serif;
 $mono: 'JetBrains Mono', monospace;
 $sans: 'Montserrat', sans-serif;
 $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+$ease: cubic-bezier(0.16, 1, 0.3, 1);
 
-// ─── ABOUT SECTION ──────────────────────────────────────────────
+// ─── SECTION SHELL ──────────────────────────────────────────────
 .about-minimal {
   color: #fff;
   padding: 160px 0;
   position: relative;
   overflow: hidden;
+  /* 🎯 სრული შავის ნაცვლად დავსვით მდიდრული გრაფიტისფერი რადიალური გრადიენტი */
+  background: radial-gradient(120% 120% at 80% 0%, $bg-gradient-top 0%, $dark 60%);
   contain: content;
 
   .container {
@@ -22,13 +32,33 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     z-index: 2;
   }
 
+  // ─── BACKGROUND DECOR ─────────────────────────────────────────
+  .about-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+
+    .glow {
+      position: absolute;
+      top: -10%;
+      right: -5%;
+      width: 50vw;
+      height: 50vw;
+      max-width: 700px;
+      max-height: 700px;
+      background: radial-gradient(circle, rgba($gold, 0.15) 0%, transparent 65%);
+      filter: blur(20px);
+    }
+  }
+
+  // ─── INTRO GRID ───────────────────────────────────────────────
   .about-grid {
     display: flex;
-    align-items: center;
     gap: 100px;
 
     @media (max-width: 992px) {
-      flex-direction: column;
+      flex-direction: column-reverse;
       text-align: center;
       gap: 60px;
     }
@@ -39,20 +69,35 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     flex: 1;
 
     .meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 16px;
       font-family: $mono;
       color: $gold;
       text-transform: uppercase;
-      letter-spacing: 5px;
-      font-size: 0.75rem;
-      margin-bottom: 20px;
+      letter-spacing: 4px;
+      font-size: 0.72rem;
+      margin-bottom: 28px;
+
+      .meta-line {
+        width: 40px;
+        height: 1px;
+        background: $gold;
+        display: inline-block;
+      }
+
+      @media (max-width: 992px) {
+        justify-content: center;
+      }
     }
 
     h1 {
       font-family: $serif;
-      font-size: clamp(2.8rem, 5vw, 4.5rem);
+      font-size: clamp(2.6rem, 5vw, 4.4rem);
       font-weight: 400;
-      line-height: 1.1;
-      margin-bottom: 40px;
+      line-height: 1.12;
+      margin-bottom: 36px;
+      letter-spacing: -0.5px;
 
       .accent {
         color: $gold;
@@ -61,19 +106,47 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .description {
-      max-width: 500px;
+      max-width: 520px;
 
       p {
         font-family: $sans;
-        color: rgba(255, 255, 255, 0.6);
-        font-size: 1.1rem;
-        line-height: 1.8;
-        margin-bottom: 25px;
+        /* 🎯 ტექსტის ფერი ოდნავ გავაძლიერეთ წაკითხვადობისთვის */
+        color: rgba(255, 255, 255, 0.72); 
+        font-size: 1.08rem;
+        line-height: 1.85;
+        margin-bottom: 22px;
         font-weight: 300;
       }
 
       @media (max-width: 992px) {
         margin: 0 auto;
+      }
+    }
+
+    .signature {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 18px;
+
+      .signature-mark {
+        font-family: $serif;
+        font-style: italic;
+        font-size: 2rem;
+        color: $gold;
+        line-height: 1;
+      }
+
+      .signature-text {
+        font-family: $mono;
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      @media (max-width: 992px) {
+        justify-content: center;
       }
     }
   }
@@ -90,22 +163,21 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     .image-container {
-      position: relative; // აუცილებელია ngSrc fill-ისთვის
+      position: relative;
       width: 100%;
       max-width: 480px;
-      aspect-ratio: 4 / 5; // ავტომატურად განსაზღვრავს სიმაღლეს სიგანის მიხედვით
+      aspect-ratio: 4 / 5;
       margin: 0;
 
       @media (max-width: 992px) {
         margin: 0 auto;
       }
 
-      // სურათის სტილი
       .about-img {
         object-fit: cover;
         transition: $transition;
         z-index: 2;
-        filter: grayscale(0.2) contrast(1.1);
+        filter: grayscale(0.15) contrast(1.05);
         transform: translate3d(-15px, -15px, 0);
         will-change: transform;
       }
@@ -113,15 +185,14 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       .image-frame {
         position: absolute;
         top: 15px;
-        right: -15px; // ჩარჩო სიმეტრიულად გავწიოთ მარჯვნივ
+        right: -15px;
         width: 100%;
         height: 100%;
-        border: 1px solid rgba($gold, 0.3);
+        border: 1px solid rgba($gold, 0.4);
         z-index: 1;
         transition: $transition;
       }
 
-      // Hover ეფექტი
       &:hover {
         .about-img {
           transform: translate3d(0, 0, 0);
@@ -135,14 +206,114 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
       }
     }
   }
+
+  // ─── STAT BAND ────────────────────────────────────────────────
+  .about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    margin-top: 130px;
+    /* ბადის გამყოფი ხაზები */
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+
+    .stat {
+      /* 🎯 მკვდარი შავი ფონის ნაცვლად ჩავსვით დახვეწილი პანელის ფერი */
+      background: $surface-card; 
+      padding: 44px 30px;
+      text-align: center;
+      transition: $transition;
+
+      .stat-num {
+        font-family: $serif;
+        font-size: clamp(2.4rem, 4vw, 3.4rem);
+        color: #fff;
+        line-height: 1;
+        margin-bottom: 12px;
+
+        span {
+          color: $gold;
+        }
+      }
+
+      .stat-label {
+        font-family: $mono;
+        font-size: 0.7rem;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.55);
+      }
+
+      &:hover {
+        /* 🎯 ჰოვერზე ოდნავ კიდევ უფრო ვანათებთ */
+        background: $surface-hover; 
+
+        .stat-num { color: $gold-soft; }
+      }
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  // ─── VALUES ───────────────────────────────────────────────────
+  .about-values {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 50px;
+    margin-top: 90px;
+
+    .value {
+      position: relative;
+      padding-top: 30px;
+      border-top: 1px solid rgba($gold, 0.3);
+
+      .value-index {
+        font-family: $mono;
+        font-size: 0.75rem;
+        letter-spacing: 3px;
+        color: $gold;
+        display: block;
+        margin-bottom: 20px;
+      }
+
+      h3 {
+        font-family: $serif;
+        font-size: 1.5rem;
+        font-weight: 400;
+        margin-bottom: 14px;
+        color: #fff;
+      }
+
+      p {
+        font-family: $sans;
+        font-weight: 300;
+        font-size: 0.98rem;
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.65);
+      }
+
+      &:hover {
+        border-top-color: $gold;
+      }
+    }
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 40px;
+      text-align: center;
+    }
+  }
 }
 
 // ============================================================
 // MOBILE RESPONSIVE
 // ============================================================
-
 @media (max-width: 992px) {
   .about-minimal {
+    padding: 110px 0;
+
     .image-side {
       padding: 0 15px;
 
@@ -167,11 +338,14 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         }
       }
     }
+
+    .about-stats { margin-top: 80px; }
   }
 }
 
 @media (max-width: 576px) {
   .about-minimal {
+    .container { padding: 0 24px; }
 
     .content-side {
       h1 {
@@ -183,6 +357,23 @@ $transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
         font-size: 1rem !important;
         line-height: 1.6 !important;
       }
+    }
+  }
+}
+
+// ─── ACCESSIBILITY ──────────────────────────────────────────────
+@media (prefers-reduced-motion: reduce) {
+  .about-minimal {
+    .about-img,
+    .image-frame,
+    .image-tag,
+    .stat,
+    .value {
+      transition: none !important;
+    }
+
+    .image-container .about-img {
+      transform: translate3d(-15px, -15px, 0) !important;
     }
   }
 }

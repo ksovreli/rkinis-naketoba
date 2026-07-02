@@ -1,48 +1,53 @@
-import { Injectable, signal, inject, PLATFORM_ID } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { isPlatformServer } from '@angular/common';
+import { Injectable, signal, inject } from '@angular/core';
+import { createClient } from '@sanity/client';
+import imageUrlBuilder, { createImageUrlBuilder } from '@sanity/image-url';
 import { Product } from '../models/product.model';
-import { finalize, first, catchError, of } from 'rxjs';
 
-@Injectable({
-  providedIn: 'root'
-})
+const client = createClient({
+  projectId: 'rf0fs633', // აი, ეს არის სწორი კოდი
+  dataset: 'production',
+  useCdn: true,
+  apiVersion: '2026-06-12' 
+});
+
+const builder = createImageUrlBuilder(client);
+
+@Injectable({ providedIn: 'root' })
 export class ProductService {
-  private http = inject(HttpClient);
-  private platformId = inject(PLATFORM_ID);
-  private request = inject('REQUEST' as any, { optional: true }) as any;
-
-  private jsonUrl = 'data/products.json';
-
   products = signal<Product[]>([]);
   isLoading = signal<boolean>(false);
 
-  loadProducts(): void {
-    if (this.products().length > 0 || this.isLoading()) return;
+ async loadProducts(): Promise<void> {
+    if (this.products().length > 0) return;
     this.isLoading.set(true);
 
-    // 🎯 ყველაზე მარტივი და მუშა ვერსია: 
-    // ყოველთვის გამოიყენე ფარდობითი გზა. 
-    // Angular/SSR ამას მშვენივრად ამუშავებს როგორც ლოკალურად, ისე ჰოსტინგზე.
-    const finalUrl = '/data/products.json';
+    try {
+      // 1. მონაცემების წამოღება Sanity-დან
+      const data = await client.fetch(`*[_type == "product"] | order(_createdAt asc)`);
 
-    this.http.get<Product[]>(finalUrl)
-      .pipe(
-        first(),
-        catchError((err) => {
-          console.error('მონაცემები ვერ ჩაიტვირთა:', err);
-          return of([]);
-        }),
-        finalize(() => this.isLoading.set(false))
-      )
-      .subscribe((data) => {
-        const formattedData = data.map(p => ({
-          ...p,
-          imageUrl: p.imageUrl.startsWith('http') || p.imageUrl.startsWith('images/')
-            ? p.imageUrl
-            : `images/${p.imageUrl}`
-        }));
-        this.products.set(formattedData);
+      // 2. მონაცემების დამუშავება და დანომრვა კატეგორიების მიხედვით
+      const formattedProducts: Product[] = data.map((item: any, index: number, array: any[]) => {
+        // ვპოულობთ ყველა ნივთს, რომელიც იმავე კატეგორიისაა, რაც მიმდინარე
+        const sameCategoryItems = array.filter(p => p.category === item.category);
+        
+        // ვპოულობთ მიმდინარე ნივთის პოზიციას ამ კატეგორიის სიაში
+        const position = sameCategoryItems.findIndex(p => p._id === item._id) + 1;
+
+        return {
+          id: index + 1, // უნიკალური ID მთლიანი სიისთვის
+          title: `${item.category} #${position}`, // ავტომატური სახელი (მაგ: გისოსი #1)
+          category: item.category,
+          imageUrl: item.image ? builder.image(item.image).url() : '',
+          isFeatured: false
+        };
       });
+
+      // 3. შედეგის განახლება
+      this.products.set(formattedProducts);
+    } catch (error) {
+      console.error('Error loading products:', error);
+    } finally {
+      this.isLoading.set(false);
+    }
   }
 }

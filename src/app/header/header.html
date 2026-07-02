@@ -1,33 +1,44 @@
 <header class="navbar" [class.scrolled]="isScrolled()">
   <div class="nav-container">
 
-    <!-- Logo -->
-    <a class="logo-wrapper" routerLink="/" aria-label="რკინის ნაკეთობა - მთავარი გვერდი">
+    <a class="logo-wrapper" routerLink="/" aria-label="რკინის დიზაინი - მთავარი გვერდი">
       <div class="logo-text">
-        <span class="brand">რკინის <span class="gold">ნაკეთობა</span></span>
-        <span class="sub-brand">Metalwork</span>
+        <span class="brand">რკინის <span class="gold">დიზაინი</span></span>
+        <span class="sub-brand">რკინის ნაკეთობები</span>
       </div>
     </a>
 
-    <!-- Navigation -->
     <nav class="nav-menu" [class.open]="isMenuOpen()">
       <ul class="nav-links">
-        <li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}"
-            (click)="closeMenu()">მთავარი</a></li>
-        <li><a routerLink="/chveni-namushevrebi" routerLinkActive="active" (click)="closeMenu()">ჩვენი ნამუშევრები</a>
+        <li>
+          <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}" (click)="closeMenu()">
+            მთავარი
+          </a>
         </li>
-        <li><a routerLink="/chvens-shesakheb" routerLinkActive="active" (click)="closeMenu()">ჩვენს შესახებ</a></li>
-        <li><a routerLink="/kontakti" routerLinkActive="active" (click)="closeMenu()">კონტაქტი</a></li>
+        <li>
+          <a routerLink="/chveni-namushevrebi/" routerLinkActive="active" (click)="closeMenu()">
+            ჩვენი ნამუშევრები
+          </a>
+        </li>
+        <li>
+          <a routerLink="/chvens-shesakheb/" routerLinkActive="active" (click)="closeMenu()">
+            ჩვენს შესახებ
+          </a>
+        </li>
+        <li>
+          <a routerLink="/kontakti/" routerLinkActive="active" (click)="closeMenu()">
+            კონტაქტი
+          </a>
+        </li>
       </ul>
     </nav>
 
-    <!-- Call to Action (Optional) -->
     <div class="header-actions">
-      <button routerLink="/kontakti" class="cta-btn">დაგვიკავშირდით</button>
+      <button routerLink="/kontakti/" class="cta-btn">დაგვიკავშირდით</button>
 
-      <!-- Burger -->
       <button class="burger" (click)="toggleMenu()" [class.active]="isMenuOpen()" [attr.aria-expanded]="isMenuOpen()"
-        aria-label="მენიუს გახსნა/დახურვა"> <span></span>
+        aria-label="მენიუს გახსნა/დახურვა"> 
+        <span></span>
         <span></span>
         <span></span>
       </button>

@@ -1,70 +1,105 @@
-<section class="premium-gallery">
-  <header class="gallery-header">
-    <span class="pre-title">სიზუსტე დეტალებში</span>
-    <h1 class="main-title">
+<section class="gallery">
+  <header class="gallery__header">
+    <span class="gallery__eyebrow">სიზუსტე დეტალებში</span>
+    <h1 class="gallery__title">
       @if (selectedCategory() === 'ყველა') {
-      ჩვენი <span class="gold">ნამუშევრები</span>
+      რკინის <span class="gold">ნაკეთობები</span>
       } @else {
-      რკინის <span class="gold">{{ selectedCategory() }}</span>
+      რკინის <span class="gold">{{ selectedCategoryPlural() }}</span>
       }
     </h1>
-    <div class="premium-divider">
-      <span class="line"></span>
-      <span class="diamond"></span>
-      <span class="line"></span>
+    <div class="gallery__rule">
+      <span class="rule-line"></span>
+      <span class="rule-diamond"></span>
+      <span class="rule-line"></span>
     </div>
   </header>
 
-  <nav class="filter-bar" aria-label="კატეგორიების ფილტრი">
-    <div class="filter-track">
-      <a class="filter-btn" 
-         [class.active]="selectedCategory() === 'ყველა'"
-         [routerLink]="['/chveni-namushevrebi']"
-         (click)="setCategory('ყველა'); $event.preventDefault()"
-         [attr.aria-pressed]="selectedCategory() === 'ყველა'">
-         ყველა
+  <div class="gallery__toolbar">
+    <nav class="filters" aria-label="კატეგორიების ფილტრი">
+      <a class="filters__btn" [class.is-active]="selectedCategory() === 'ყველა'" routerLink="/chveni-namushevrebi/"
+        (click)="resetSearchOnly()" [attr.aria-pressed]="selectedCategory() === 'ყველა'">
+        ყველა
       </a>
 
       @for (cat of categories(); track cat) {
-        @if (cat !== 'ყველა') {
-          @let slug = cat === 'კარი' ? 'kari' : cat === 'ჭიშკარი' ? 'chishkari' : cat === 'მოაჯირი' ? 'moajiri' : 'gisosi';
-          
-          <a class="filter-btn" 
-             [class.active]="selectedCategory() === cat"
-             [routerLink]="['/chveni-namushevrebi', slug]"
-             (click)="setCategory(cat); $event.preventDefault()"
-             [attr.aria-pressed]="selectedCategory() === cat">
-            {{ cat }}
-          </a>
-        }
+      @if (cat !== 'ყველა') {
+      <a class="filters__btn" [class.is-active]="selectedCategory() === cat"
+        [routerLink]="'/chveni-namushevrebi/' + getSlug(cat) + '/'" (click)="resetSearchOnly()"
+        [attr.aria-pressed]="selectedCategory() === cat">
+        {{ cat }}
+      </a>
+      }
+      }
+    </nav>
+
+    <div class="search">
+      <svg class="search__icon" viewBox="0 0 24 24" aria-hidden="true">
+        <path
+          d="M15.5 14h-.79l-.28-.27a6.471 6.471 0 0 0 1.57-4.23 6.5 6.5 0 1 0-6.5 6.5 6.471 6.471 0 0 0 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C8.01 14 6 11.99 6 9.5S8.01 5 10.5 5 15 7.01 15 9.5 12.99 14 10.5 14z" />
+      </svg>
+      <input id="gallery-search-input" type="search" class="search__input" [value]="searchQuery()"
+        (input)="onSearchChange($event)" placeholder="ძიება ნომრით — მაგ. კარი 1, ჭიშკარი 5..." autocomplete="off"
+        enterkeyhint="search" aria-label="ნაკეთობების ძიება ნომრით" />
+      @if (hasActiveSearch()) {
+      <button type="button" class="search__clear" (click)="clearSearch()" aria-label="ძიების გასუფთავება">×</button>
       }
     </div>
-  </nav>
+  </div>
+
+  @if (hasActiveSearch() && !productService.isLoading()) {
+  <p class="gallery__meta">{{ filteredProducts().length }} შედეგი</p>
+  }
 
   @if (productService.isLoading()) {
-  <div class="loader-wrapper">
-    <div class="custom-spinner" aria-label="მიმდინარეობს ჩატვირთვა"></div>
+  <div class="state state--loading">
+    <div class="spinner" aria-label="იტვირთება"></div>
+  </div>
+  } @else if (filteredProducts().length === 0) {
+  <div class="state state--empty">
+    <p class="state__title">შედეგი არ მოიძებნა</p>
+    <p class="state__text">სცადეთ სხვა ნომერი ან კატეგორია — მაგალითად "კარი 1" ან "ჭიშკარი 5".</p>
+    @if (hasActiveSearch()) {
+    <button type="button" class="state__reset" (click)="clearSearch()">ძიების გასუფთავება</button>
+    }
   </div>
   } @else {
-  <div class="gallery-grid">
+  <div class="grid">
     @for (item of filteredProducts(); track item.id; let i = $index) {
-    <button class="work-card" (click)="openImage(item)" [attr.aria-label]="item.customTitle + ' - სურათის გახსნა'">
-      <div class="card-media">
-        <img [ngSrc]="item.imageUrl"
-          [alt]="'უმაღლესი ხარისხის რკინის ' + item.category + ' თბილისში - ' + item.customTitle" fill
-          [priority]="i < 2" class="premium-img">
+    <button class="card" [class.card--feature]="i === 0" (click)="openImage(item)"
+      [attr.aria-label]="item.customTitle + ' — სურათის გახსნა'">
+      <div class="card__media">
 
-        <div class="card-hover-info">
-          <span class="plus" aria-hidden="true">+</span>
-          <p>დათვალიერება</p>
-        </div>
-        <div class="badge">№{{ i + 1 }}</div>
+        @if (i === 0) {
+        @if (item.imageUrl && item.imageUrl.startsWith('data:')) {
+        <img [src]="item.imageUrl" [alt]="item.customTitle" class="card__img"
+          style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; object-fit: cover;">
+        } @else {
+        <img [ngSrc]="item.imageUrl" priority [alt]="item.customTitle" fill class="card__img">
+        }
+        } @else {
+        @if (item.imageUrl && item.imageUrl.startsWith('data:')) {
+        <img [src]="item.imageUrl" [alt]="item.customTitle" class="card__img"
+          style="position: absolute; width: 100%; height: 100%; top: 0; left: 0; object-fit: cover;">
+        } @else {
+        <img [ngSrc]="item.imageUrl" [alt]="item.customTitle" fill class="card__img">
+        }
+        }
+
+        <span class="card__index">№{{ item.displayNumber }}</span>
       </div>
-      <div class="card-body">
-        <span class="category-tag">{{ item.category }}</span>
-        <div class="title-row">
-          <h2 class="title">{{ item.customTitle }}</h2>
-        </div>
+
+      <div class="card__body">
+        @let cardSeoLabel = item.category === 'კარი' ? 'რკინის კარი'
+        : item.category === 'ჭიშკარი' ? 'რკინის ჭიშკარი'
+        : item.category === 'აივნის მოაჯირი' ? 'რკინის აივნის მოაჯირი'
+        : item.category === 'კიბის მოაჯირი' ? 'რკინის კიბის მოაჯირი'
+        : item.category === 'კიბე' ? 'რკინის კიბე'
+        : item.category === 'გისოსი' ? 'რკინის გისოსი'
+        : 'რკინის მაყალი';
+
+        <span class="card__cat">{{ cardSeoLabel }}</span>
+        <h2 class="card__title">{{ item.customTitle }}</h2>
       </div>
     </button>
     }
@@ -73,20 +108,26 @@
 </section>
 
 @if (selectedImage(); as img) {
-<div class="fixed-lightbox" (click)="closeImage()" role="dialog" aria-modal="true">
-  <div class="lightbox-overlay"></div>
-  <button class="close-x" (click)="closeImage()" aria-label="დახურვა">
+<div class="lightbox" (click)="closeImage()" role="dialog" aria-modal="true">
+  <div class="lightbox__overlay"></div>
+  <button class="lightbox__close" (click)="closeImage()" aria-label="დახურვა">
     <span aria-hidden="true"></span><span aria-hidden="true"></span>
   </button>
-  <div class="img-container" (click)="$event.stopPropagation()">
-    <div class="img-wrapper">
-      <img [src]="img.imageUrl" [alt]="img.customTitle" class="full-img animate-in">
-      <div class="img-info-panel">
-        <span class="info-category">{{ img.category }}</span>
-        <h2 class="info-title">{{ img.customTitle }}</h2>
-        <div class="info-line"></div>
-      </div>
-    </div>
-  </div>
+  <figure class="lightbox__frame" (click)="$event.stopPropagation()">
+    <img [src]="img.imageUrl" [alt]="img.customTitle" class="lightbox__img">
+    <figcaption class="lightbox__caption">
+      @let lightboxSeoLabel = img.category === 'კარი' ? 'რკინის კარი'
+      : img.category === 'ჭიშკარი' ? 'რკინის ჭიშკარი'
+      : img.category === 'აივნის მოაჯირი' ? 'რკინის აივნის მოაჯირი'
+      : img.category === 'კიბის მოაჯირი' ? 'რკინის კიბის მოაჯირი'
+      : img.category === 'კიბე' ? 'რკინის კიბე'
+      : img.category === 'გისოსი' ? 'რკინის გისოსი'
+      : 'რკინის მაყალი';
+
+      <span class="lightbox__cat">{{ lightboxSeoLabel }}</span>
+      <h2 class="lightbox__title">{{ img.customTitle }}</h2>
+      <span class="lightbox__line"></span>
+    </figcaption>
+  </figure>
 </div>
 }

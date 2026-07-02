@@ -3,23 +3,22 @@ import { CommonModule, isPlatformBrowser, NgOptimizedImage, DOCUMENT } from '@an
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ProductService } from '../services/product.service';
 import { SeoService } from '../services/seo';
+import { Product } from '../models/product.model';
 
-// ─── სლაგების მეპინგი ორმხრივი კონვერტაციისთვის ───────────────────
 const slugMap: { [key: string]: string } = {
   'ყველა': 'main',
   'კარი': 'kari',
   'ჭიშკარი': 'chishkari',
-  'მოაჯირი': 'moajiri',
+  'აივნის მოაჯირი': 'aivnis-moajiri',
+  'კიბის მოაჯირი': 'kibis-moajiri',
+  'კიბე': 'kibe',
+  'მაყალი': 'mayali',
   'გისოსი': 'gisosi'
 };
 
-const reverseSlugMap: { [key: string]: string } = {
-  'main': 'ყველა',
-  'kari': 'კარი',
-  'chishkari': 'ჭიშკარი',
-  'moajiri': 'მოაჯირი',
-  'gisosi': 'გისოსი'
-};
+const reverseSlugMap: { [key: string]: string } = Object.fromEntries(
+  Object.entries(slugMap).map(([k, v]) => [v, k])
+);
 
 @Component({
   selector: 'app-gallery',
@@ -37,6 +36,17 @@ export class Gallery implements OnInit, OnDestroy {
   private isBrowser: boolean;
   selectedCategory = signal<string>('ყველა');
   selectedImage = signal<any | null>(null);
+  searchQuery = signal('');
+
+  private readonly categorySearchAliases: Record<string, string[]> = {
+    'კარი': ['კარი', 'kari', 'kar', 'რკინის კარი'],
+    'ჭიშკარი': ['ჭიშკარი', 'chishkari', 'chishk', 'ჭიშკ'],
+    'აივნის მოაჯირი': ['აივნის მოაჯირი', 'aivnis', 'aivnis-moajiri', 'aivnis moajiri', 'moajiri'],
+    'კიბის მოაჯირი': ['კიბის მოაჯირი', 'kibis', 'kibis-moajiri', 'kibi'],
+    'კიბე': ['კიბე', 'kibe'],
+    'მაყალი': ['მაყალი', 'mayali', 'mayalebi'],
+    'გისოსი': ['გისოსი', 'gisosi', 'gisosebi']
+  };
 
   constructor(
     @Inject(PLATFORM_ID) private platformId: Object,
@@ -49,64 +59,77 @@ export class Gallery implements OnInit, OnDestroy {
     this.productService.loadProducts();
 
     this.route.params.subscribe(params => {
-      const paramCat = params['category'];
+      let paramCat = params['category'];
 
-      // 1. თუ პარამეტრი საერთოდ არ არის, ესე იგი "ყველა"-ზეა
       if (!paramCat) {
         this.selectedCategory.set('ყველა');
         this.updateSEO('ყველა');
         return;
       }
 
-      // 2. ვამოწმებთ, არის თუ არა მოსული პარამეტრი ჩვენს ლათინურ Reverse Map-ში
+      // 🎯 ვასუფთავებთ სლეშებისგან შიდა სელექტორისთვის
+      paramCat = paramCat.replace(/\//g, '');
+
       if (reverseSlugMap[paramCat]) {
-        // თუ ლათინურია (მაგ. 'kari'), ჩვეულებრივად ვსვამთ ქართულ სახელს ფილტრისთვის
         this.selectedCategory.set(reverseSlugMap[paramCat]);
         this.updateSEO(reverseSlugMap[paramCat]);
       } else {
-        // 3. 🚨 თუ მოსული პარამეტრი ქართულია (ან დაშიფრული ქართული)
         const decodedCat = decodeURIComponent(paramCat);
-
-        // ვეძებთ, გვაქვს თუ არა საერთოდ ასეთი კატეგორიის სლაგი
         const correctSlug = slugMap[decodedCat];
 
         if (correctSlug) {
-          // თუ ვიპოვეთ (მაგ. "კარი"-სთვის არის "kari"), ძალთ აკეთებს რედირექტს ლათინურ ლინკზე!
-          this.router.navigate(['/chveni-namushevrebi', correctSlug], { replaceUrl: true });
+          // 🎯 რედირექტი სუფთა სტრინგზე ბოლოში სლეშით
+          this.router.navigateByUrl(`/chveni-namushevrebi/${correctSlug}/`, { replaceUrl: true });
         } else {
-          // თუ საერთოდ რაღაც სისულელე ჩაწერა ლინკში, გადავიყვანოთ მთავარ გალერეაზე
-          this.router.navigate(['/chveni-namushevrebi'], { replaceUrl: true });
+          this.router.navigateByUrl('/chveni-namushevrebi/', { replaceUrl: true });
         }
       }
     });
   }
 
-  // ბარემ სეო მენეჯმენტი ცალკე ფუნქციაში გავიტანოთ, კოდი რომ სუფთა იყოს
+  getSlug(category: string): string {
+    return slugMap[category] || category;
+  }
+
+  // 🎯 მხოლოდ ძებნას ვასუფთავებთ, ნავიგაციას HTML-ის სტრინგ-ლინკი აკეთებს თავისით
+  resetSearchOnly() {
+    this.searchQuery.set('');
+  }
+
   private updateSEO(cat: string) {
     const imgSlug = slugMap[cat] || 'main';
-    const pluralMap: { [key: string]: string } = {
-      'კარი': 'კარები',
-      'ჭიშკარი': 'ჭიშკრები',
-      'მოაჯირი': 'მოაჯირები',
-      'გისოსი': 'გისოსები'
+
+    // 🎯 ხალხი გუგლში ეძებს "რკინის კარები"-ს და არა "კარები"-ს. 
+    // ამიტომ ბრენდირებულ სიტყვებს პირდაპირ აქ ვსვამთ ოპტიმიზაციისთვის.
+    const seoNameMap: { [key: string]: string } = {
+      'კარი': 'რკინის კარები',
+      'ჭიშკარი': 'რკინის ჭიშკრები',
+      'აივნის მოაჯირი': 'რკინის აივნის მოაჯირები',
+      'კიბის მოაჯირი': 'რკინის კიბის მოაჯირები',
+      'კიბე': 'რკინის კიბეები',
+      'მაყალი': 'რკინის მაყალები',
+      'გისოსი': 'რკინის გისოსები'
     };
 
-    const currentPlural = pluralMap[cat] || cat;
+    const currentPlural = seoNameMap[cat] || cat;
 
+    // 🎯 სათაურის (Title) ფორმირება კონკრეტული საკვანძო სიტყვით
     const pageTitle = cat === 'ყველა'
-      ? 'ჩვენი ნამუშევრები | rkinissaamqro.ge'
-      : `რკინის ${currentPlural} | rkinissaamqro.ge`;
+      ? 'რკინის ნაკეთობები - ჩვენი ნამუშევრები' // სერვისი თავისით მიაწერს | rkinisdizaini.ge
+      : `${currentPlural} შეკვეთით`;
 
+    // 🎯 აღწერის (Description) ფორმირება, რომელიც გუგლში საიტის ქვეშ გამოჩნდება
     const pageDesc = cat === 'ყველა'
-      ? 'იხილეთ ჩვენი ნამუშევრები: უმაღლესი ხარისხის რკინის კარები, ჭიშკრები, მოაჯირები და გისოსები შეკვეთით 20 წლიანი გამოცდილებით.'
-      : `პრემიუმ ხარისხის რკინის ${currentPlural} თბილისში ინდივიდუალური დიზაინითა და გარანტიით. დაათვალიერეთ ჩვენი ფოტო გალერეა.`;
+      ? 'იხილეთ ჩვენი ნამუშევრები: უმაღლესი ხარისხის რკინის კარები, ჭიშკრები, მოაჯირები, კიბეები, გისოსები და მაყალები შეკვეთით 20 წლის გამოცდილებით.'
+      : `პრემიუმ ხარისხის ${currentPlural} თბილისში ინდივიდუალური დიზაინით, საუკეთესო მასალითა და გარანტიით. დაათვალიერეთ ფოტო გალერეა.`;
 
     this.seo.updateMeta({
       title: pageTitle,
       description: pageDesc,
-      image: `images/og-${imgSlug}.webp`
+      image: `chishkrebi/chishkari-1.webp`
     });
   }
+
   ngOnDestroy(): void {
     if (this.isBrowser) {
       this.doc.body.style.overflow = '';
@@ -115,13 +138,30 @@ export class Gallery implements OnInit, OnDestroy {
   }
 
   categories = computed(() => {
-    const cats = this.productService.products().map(p => p.category);
+    const products = this.productService.products();
+    const cats = Array.isArray(products) ? products.map(p => p.category) : [];
     return ['ყველა', ...new Set(cats)];
+  });
+
+  selectedCategoryPlural = computed(() => {
+    const cat = this.selectedCategory();
+    const pluralMap: { [key: string]: string } = {
+      'კარი': 'კარები',
+      'ჭიშკარი': 'ჭიშკრები',
+      'აივნის მოაჯირი': 'აივნის მოაჯირები',
+      'კიბის მოაჯირი': 'კიბის მოაჯირები',
+      'კიბე': 'კიბეები',
+      'მაყალი': 'მაყალები',
+      'გისოსი': 'გისოსები'
+    };
+    return pluralMap[cat] || cat;
   });
 
   filteredProducts = computed(() => {
     const category = this.selectedCategory();
     const allProducts = this.productService.products();
+
+    if (!Array.isArray(allProducts)) return [];
 
     let result;
 
@@ -155,22 +195,82 @@ export class Gallery implements OnInit, OnDestroy {
     const counters: { [key: string]: number } = {};
     return result.map(item => {
       counters[item.category] = (counters[item.category] || 0) + 1;
+      const displayNumber = counters[item.category];
       return {
         ...item,
-        customTitle: `${item.category} #${counters[item.category]}`
+        displayNumber,
+        customTitle: `${item.category} #${displayNumber}`
       };
-    });
+    }).filter(item => this.matchesSearch(item, this.searchQuery()));
   });
 
-  setCategory(category: string) {
-    if (this.selectedCategory() === category) return;
+  hasActiveSearch = computed(() => this.searchQuery().trim().length > 0);
 
-    const slug = slugMap[category] || category;
-    const target = category === 'ყველა'
-      ? ['/chveni-namushevrebi']
-      : ['/chveni-namushevrebi', slug];
+  onSearchChange(event: Event) {
+    this.searchQuery.set((event.target as HTMLInputElement).value);
+  }
 
-    this.router.navigate(target);
+  clearSearch() {
+    this.searchQuery.set('');
+  }
+
+  private normalizeForSearch(text: string): string {
+    return text.trim().toLowerCase().replace(/\s+/g, ' ');
+  }
+
+  private queryMatchesCategory(query: string, category: string): boolean {
+    const normalizedCategory = category.toLowerCase();
+    if (query.includes(normalizedCategory)) {
+      return true;
+    }
+
+    const slug = slugMap[category]?.toLowerCase();
+    if (slug && query.includes(slug)) {
+      return true;
+    }
+
+    return (this.categorySearchAliases[category] ?? []).some(alias => query.includes(alias.toLowerCase()));
+  }
+
+  private extractQueryNumber(query: string): number | null {
+    const match = query.match(/(?:№|#)?(\d+)/);
+    return match ? parseInt(match[1], 10) : null;
+  }
+
+  private matchesSearch(item: Product & { customTitle?: string; displayNumber?: number }, query: string): boolean {
+    const q = this.normalizeForSearch(query);
+    if (!q) {
+      return true;
+    }
+
+    const displayNumber = item.displayNumber ?? 0;
+    const customTitle = (item.customTitle ?? '').toLowerCase();
+    const title = (item.title ?? '').toLowerCase();
+    const categoryLower = item.category.toLowerCase();
+    const queryNumber = this.extractQueryNumber(q);
+    const compactQuery = q.replace(/\s+/g, '');
+
+    if (customTitle.includes(q) || title.includes(q) || categoryLower.includes(q)) {
+      return true;
+    }
+
+    if (queryNumber !== null && displayNumber === queryNumber) {
+      const isNumberOnly = /^(?:№|#)?\d+$/.test(compactQuery);
+      if (isNumberOnly) {
+        return true;
+      }
+
+      if (this.queryMatchesCategory(q, item.category)) {
+        return true;
+      }
+
+      const slug = slugMap[item.category]?.toLowerCase();
+      if (slug && (q.includes(`${slug} ${queryNumber}`) || q.includes(`${slug}-${queryNumber}`) || q.includes(`${slug}${queryNumber}`))) {
+        return true;
+      }
+    }
+
+    return false;
   }
 
   openImage(item: any) {

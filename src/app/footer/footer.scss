@@ -1,273 +1,407 @@
-// ============================================================
-// FOOTER LOCAL VARIABLES & CONFIG
-// ============================================================
-$f-gold: #c5a059;
-$f-gold-light: #e6ce9e;
-$f-dark: #050505;
-$f-serif: 'Playfair Display', serif;
-$f-mono: 'JetBrains Mono', monospace;
-$f-transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-$f-text-muted: rgba(255, 255, 255, 0.5);
+// ================================================================
+// TOKENS (aligned with updated graphite home page)
+// ================================================================
+$gold: #c9a25a;
+$gold-light: #ecd29a;
+$gold-glow: rgba(201, 162, 90, 0.16);
 
-// ============================================================
-// PREMIUM FOOTER STYLES
-// ============================================================
+/* 🎯 ახალი, განათებული გრაფიტისფერი სისტემა */
+$dark: #1e1e22;            // სრული შავის ნაცვლად (მთავარი ბაზა)
+$surface-1: #24242a;       // ფუტერის ქვედა გრადიენტის წერტილი
+$surface-2: #2a2a30;       // სოციალური წრეების და ელემენტების ბეგრაუნდი
+
+$border-dim: rgba(255, 255, 255, 0.08);
+$border-gold: rgba(201, 162, 90, 0.32);
+
+/* ტექსტების ფერების გაძლიერება ახალი ფონისთვის */
+$text-1: #f6f5f2;
+$text-2: #b8b5ae;          // ოდნავ უფრო ნათელი ლინკებისთვის
+$text-3: #807d75;          // მეტი კონტრასტი სუბ-ბრენდსა და ქოფირაითს
+
+$ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+$serif: 'Playfair Display', 'Georgia', serif;
+$mono: 'JetBrains Mono', 'Courier New', monospace;
+$sans: 'Montserrat', 'Helvetica Neue', sans-serif;
+
+$sp-1: 8px;
+$sp-2: 16px;
+$sp-3: 24px;
+$sp-4: 32px;
+$sp-5: 48px;
+$sp-6: 64px;
+$sp-7: 96px;
+
+@mixin smooth($duration: 0.4s) {
+  transition:
+    transform $duration $ease-out,
+    opacity $duration $ease-out,
+    box-shadow $duration $ease-out,
+    border-color 0.35s ease,
+    background-color 0.35s ease,
+    color 0.35s ease;
+}
+
+// ================================================================
+// PREMIUM FOOTER
+// ================================================================
 .premium-footer {
-  background: transparent;
-  color: #fff;
-  padding: 100px 0 40px;
   position: relative;
-  border-top: 1px solid rgba($f-gold, 0.1);
   overflow: hidden;
-  width: 100%;
+  padding: clamp(#{$sp-6}, 8vw, #{$sp-7}) 0 $sp-4;
+  /* 🎯 გრადიენტი მთლიანად განათდა და მიიღო პრემიუმ იერი */
+  background: linear-gradient(180deg, $dark, $surface-1);
+  color: $text-1;
+  font-family: $sans;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba($gold, 0.35), transparent);
+  }
 
   .container {
-    max-width: 1300px;
+    max-width: 1320px;
     margin: 0 auto;
-    padding: 0 25px;
+    padding: 0 $sp-4;
     position: relative;
-    z-index: 5;
-  }
+    z-index: 1;
 
-  // --- Footer Top Section ---
-  .footer-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    flex-wrap: wrap;
-    gap: 40px;
-
-    @media (max-width: 992px) {
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
+    @media (max-width: 768px) {
+      padding: 0 $sp-3;
     }
   }
+}
 
-  // Brand / Logo Area
-  .footer-brand {
-    .logo {
-      font-family: $f-serif;
-      font-size: clamp(1.8rem, 5vw, 2.2rem);
-      margin: 0 0 15px;
-      letter-spacing: 1px;
+// ================================================================
+// TOP GRID
+// ================================================================
+.footer-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 380px) minmax(0, 1fr);
+  gap: clamp(#{$sp-4}, 5vw, #{$sp-6});
+  align-items: start;
+
+  @media (max-width: 992px) {
+    grid-template-columns: 1fr;
+    gap: $sp-5;
+  }
+}
+
+// ================================================================
+// BRAND
+// ================================================================
+.footer-brand {
+  min-width: 0;
+
+  .footer-logo {
+    display: inline-flex;
+    flex-direction: column;
+    gap: 6px;
+    text-decoration: none;
+    margin-bottom: $sp-4;
+    position: relative;
+    padding-bottom: $sp-2;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 48px;
+      height: 1px;
+      background: linear-gradient(90deg, $gold, transparent);
+      transition: width 0.4s $ease-out;
+    }
+
+    &:hover::after {
+      width: 100%;
+    }
+
+    .brand {
+      font-family: $serif;
+      font-size: clamp(1.6rem, 3.5vw, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      color: $text-1;
 
       .gold {
-        color: $f-gold;
+        color: $gold;
+        font-style: italic;
       }
     }
 
-    .brand-line {
-      width: 40px;
-      height: 2px;
-      background: $f-gold;
-      margin: 20px 0;
+    .sub-brand {
+      font-family: $mono;
+      font-size: 0.68rem;
+      font-weight: 500;
+      letter-spacing: 6px;
+      text-transform: uppercase;
+      color: $text-3;
+    }
+  }
 
-      @media (max-width: 992px) {
-        margin: 20px auto;
+  p {
+    max-width: 340px;
+    color: $text-2;
+    font-size: clamp(0.92rem, 2vw, 1rem);
+    font-weight: 300;
+    line-height: 1.85;
+  }
+
+  @media (max-width: 992px) {
+    text-align: center;
+
+    .footer-logo {
+      align-items: center;
+
+      &::after {
+        left: 50%;
+        translate: -50% 0;
       }
     }
 
     p {
-      color: rgba(255, 255, 255, 0.4);
-      font-size: 0.9rem;
-      max-width: 300px;
-      line-height: 1.6;
+      max-width: none;
+      margin: 0 auto;
+    }
+  }
+}
+
+// ================================================================
+// LINK GROUPS
+// ================================================================
+.footer-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(#{$sp-4}, 6vw, #{$sp-6});
+  min-width: 0;
+
+  @media (max-width: 992px) {
+    padding-top: $sp-5;
+    border-top: 1px solid $border-dim;
+  }
+
+  @media (max-width: 576px) {
+    grid-template-columns: 1fr;
+    gap: $sp-5;
+    text-align: center;
+  }
+
+  .nav-label {
+    display: inline-flex;
+    align-items: center;
+    gap: $sp-2;
+    margin-bottom: $sp-4;
+    color: $gold;
+    font-family: $mono;
+    font-size: 0.72rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 8px;
+
+    &::before,
+    &::after {
+      content: '';
+      display: block;
+      width: 20px;
+      height: 1px;
+      background: $gold;
+      opacity: 0.45;
+    }
+
+    @media (max-width: 576px) {
+      justify-content: center;
     }
   }
 
-  // Navigation & Contact Links
-  .footer-links {
-    display: flex;
-    gap: 80px;
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      margin-bottom: $sp-2;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  a:not(.contact-link) {
+    display: inline-block;
+    color: $text-2;
+    font-size: 0.95rem;
+    font-weight: 400;
+    text-decoration: none;
+    @include smooth;
+
+    &.active {
+      color: $gold;
+    }
+
+    @media (min-width: 993px) {
+      &:hover {
+        color: $text-1;
+        transform: translateX(8px);
+      }
+
+      &.active:hover {
+        color: $gold-light;
+      }
+    }
 
     @media (max-width: 992px) {
-      width: 100%;
-      justify-content: center;
-      gap: clamp(40px, 10vw, 100px);
-    }
-
-    @media (max-width: 550px) {
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-    }
-
-    .nav-label {
-      display: block;
-      font-family: $f-mono;
-      font-size: 0.7rem;
-      text-transform: uppercase;
-      color: $f-gold;
-      letter-spacing: 4px;
-      margin-bottom: 25px;
-    }
-
-    ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-
-      li {
-        margin-bottom: 14px;
-
-        // ნავიგაციის ჩვეულებრივი ბმულები
-        a:not(.contact-link) {
-          color: $f-text-muted;
-          text-decoration: none;
-          font-size: 0.95rem;
-          transition: $f-transition;
-          display: inline-block;
-          position: relative;
-
-          &:hover {
-            color: #fff;
-            transform: translateX(6px);
-          }
-
-          &.active {
-            color: $f-gold;
-            font-weight: 500;
-          }
-        }
-
-        // ტელეფონის ნომრები (მორგებული Hover ეფექტით)
-        .contact-link {
-          color: $f-text-muted;
-          text-decoration: none;
-          font-size: 0.95rem;
-          transition: $f-transition;
-          display: inline-block;
-
-          &:hover {
-            color: $f-gold;
-          }
-        }
-
-        // მისამართის სტილი
-        &.address-item {
-          color: rgba(255, 255, 255, 0.4);
-          font-size: 0.9rem;
-          max-width: 200px;
-          margin-top: 18px; // ოდნავ გამოვყოთ ნომრებისგან
-        }
+      &:hover,
+      &.active {
+        color: $gold;
       }
     }
   }
 
-  // --- Footer Bottom Section ---
-  .footer-bottom {
-    margin-top: 50px;
+  .contact-link {
+    display: inline-block;
+    color: $text-2;
+    font-family: $mono;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    @include smooth;
 
-    .divider-wrapper {
-      position: relative;
-      width: 100%;
-      height: 1px;
-      background: rgba(255, 255, 255, 0.05);
-      margin-bottom: 40px;
-      overflow: hidden;
-
-      .divider-glow {
-        position: absolute;
-        top: 0;
-        left: -150px;
-        width: 150px;
-        height: 100%;
-        background: linear-gradient(90deg, transparent, $f-gold, transparent);
-        animation: slide-glow 6s infinite linear;
-      }
-    }
-
-    .bottom-flex {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 30px;
-
-      @media (max-width: 768px) {
-        flex-direction: column-reverse;
-        text-align: center;
-      }
-    }
-
-    .copyright {
-      color: rgba(255, 255, 255, 0.25);
-      font-size: 0.8rem;
-      margin: 0;
+    &:hover {
+      color: $gold;
     }
   }
 
-  // Social Media Icons
-  .social-box {
+  .address-item {
+    margin-top: $sp-3;
+    color: $text-3;
+    font-size: 0.9rem;
+    font-weight: 300;
+    line-height: 1.6;
+  }
+}
+
+// ================================================================
+// BOTTOM BAR
+// ================================================================
+.footer-bottom {
+  margin-top: clamp(#{$sp-4}, 5vw, #{$sp-5});
+
+  .footer-divider {
+    width: 100%;
+    height: 1px;
+    margin-bottom: $sp-4;
+    background: linear-gradient(90deg, transparent, $border-dim, transparent);
+    position: relative;
+    overflow: hidden;
+
+    &::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -120px;
+      width: 120px;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba($gold, 0.5), transparent);
+      animation: footerGlow 7s linear infinite;
+    }
+  }
+
+  .bottom-flex {
     display: flex;
-    gap: 16px;
+    justify-content: space-between;
+    align-items: center;
+    gap: $sp-4;
+    flex-wrap: wrap;
 
-    .social-circle {
-      width: 48px;
-      height: 48px;
-      border: 1px solid rgba($f-gold, 0.2);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.02);
-      transition: $f-transition;
-      text-decoration: none;
+    @media (max-width: 768px) {
+      flex-direction: column-reverse;
+      text-align: center;
+    }
+  }
+
+  .copyright {
+    margin: 0;
+    color: $text-3;
+    font-family: $mono;
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.06em;
+  }
+}
+
+// ================================================================
+// SOCIAL
+// ================================================================
+.social-box {
+  display: flex;
+  gap: $sp-2;
+
+  .social-circle {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid $border-gold;
+    border-radius: 50%;
+    /* 🎯 წრის ბეგრაუნდი ჩავანაცვლეთ ახალი სუფთა სერფეისით */
+    background: $surface-2; 
+    text-decoration: none;
+    @include smooth;
+
+    svg {
+      width: 17px;
+      height: 17px;
+      fill: $text-2;
+      transition: fill 0.35s ease;
+    }
+
+    &:hover {
+      background: $gold;
+      border-color: $gold;
+      transform: translateY(-4px);
+      box-shadow: 0 10px 24px $gold-glow;
 
       svg {
-        width: 18px;
-        height: 18px;
-        fill: rgba(255, 255, 255, 0.5);
-        transition: $f-transition;
-      }
-
-      &:hover {
-        background: $f-gold;
-        border-color: $f-gold;
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba($f-gold, 0.2);
-
-        svg {
-          fill: #000;
-        }
+        fill: $dark;
       }
     }
   }
 }
 
-// ============================================================
-// MOBILE RESPONSIVE
-// ============================================================
-@media (max-width: 992px) {
-  .premium-footer {
-    .footer-links {
-      ul {
-        li {
-          a:not(.contact-link):hover {
-            transform: none !important; 
-            color: $f-gold;
-          }
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 768px) {
-  .premium-footer {
-    .social-box {
-      margin-bottom: 15px; 
-    }
-  }
-}
-
-// --- Keyframes ---
-@keyframes slide-glow {
+// ================================================================
+// ANIMATIONS & A11Y
+// ================================================================
+@keyframes footerGlow {
   0% {
-    left: -150px;
+    left: -120px;
   }
 
   100% {
     left: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .premium-footer {
+    .footer-divider::after {
+      animation: none;
+    }
+
+    .social-circle:hover {
+      transform: none;
+    }
+
+    .footer-links a:not(.contact-link):hover {
+      transform: none;
+    }
   }
 }

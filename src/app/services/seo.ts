@@ -6,45 +6,54 @@ import { DOCUMENT, isPlatformServer } from '@angular/common';
 export class SeoService {
   private title = inject(Title);
   private meta = inject(Meta);
-  private document = inject(DOCUMENT);
+  private doc = inject(DOCUMENT);
   private platformId = inject(PLATFORM_ID);
-  private request = inject('REQUEST' as any, { optional: true }) as any;
+
+  private readonly DOMAIN = 'https://rkinisdizaini.ge';
 
   updateMeta(config: { title: string; description: string; image?: string }) {
-    const fullTitle = `${config.title} | რკინის ნაკეთობები`;
-    
-    let baseUrl = '';
-    let currentUrl = '';
+    const fullTitle = config.title.includes('rkinisdizaini.ge')
+      ? config.title
+      : `${config.title} | rkinisdizaini.ge`;
 
-    if (isPlatformServer(this.platformId)) {
-      if (this.request) {
-        const protocol = this.request.protocol || 'https';
-        const host = this.request.get ? this.request.get('host') : this.request.headers?.host;
-        baseUrl = `${protocol}://${host}`;
-        currentUrl = `${baseUrl}${this.request.url || ''}`;
-      } else {
-        baseUrl = 'https://rkinissaamqro.ge';
-        currentUrl = baseUrl;
-      }
-    } else {
-      baseUrl = this.document.location?.origin || '';
-      currentUrl = this.document.URL || '';
-    }
+    const currentUrl = isPlatformServer(this.platformId)
+      ? this.DOMAIN
+      : this.doc.location.href;
 
-    const imageUrl = config.image 
-      ? (config.image.startsWith('http') ? config.image : `${baseUrl}/${config.image}`)
-      : `${baseUrl}/images/chishkari2.webp`;
+    const defaultImage = 'chishkrebi/chishkari-1.webp';
 
+    const imageUrl = config.image?.startsWith('http')
+      ? config.image
+      : `${this.DOMAIN}/${config.image || defaultImage}`;
+
+    // სათაურის განახლება
     this.title.setTitle(fullTitle);
-    this.meta.updateTag({ name: 'description', content: config.description });
-    
-    this.meta.updateTag({ property: 'og:title', content: fullTitle });
-    this.meta.updateTag({ property: 'og:description', content: config.description });
-    this.meta.updateTag({ property: 'og:image', content: imageUrl });
-    this.meta.updateTag({ property: 'og:url', content: currentUrl });
-    this.meta.updateTag({ property: 'og:type', content: 'website' });
-    
-    this.meta.updateTag({ property: 'og:image:width', content: '1200' });
-    this.meta.updateTag({ property: 'og:image:height', content: '630' });
+
+    const tags = [
+      { name: 'description', content: config.description },
+      { property: 'og:title', content: fullTitle },
+      { property: 'og:description', content: config.description },
+      { property: 'og:image', content: imageUrl },
+      { property: 'og:url', content: currentUrl },
+      { property: 'og:type', content: 'website' },
+      { name: 'twitter:card', content: 'summary_large_image' }
+    ];
+
+    tags.forEach(tag => {
+      if (tag.name) this.meta.updateTag({ name: tag.name, content: tag.content });
+      if (tag.property) this.meta.updateTag({ property: tag.property, content: tag.content });
+    });
+
+    this.updateCanonicalLink(currentUrl);
+  }
+
+  private updateCanonicalLink(url: string) {
+    let link: HTMLLinkElement | null = this.doc.querySelector("link[rel='canonical']");
+    if (!link) {
+      link = this.doc.createElement('link');
+      link.setAttribute('rel', 'canonical');
+      this.doc.head.appendChild(link);
+    }
+    link.setAttribute('href', url);
   }
 }
